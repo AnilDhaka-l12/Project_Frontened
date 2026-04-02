@@ -1,0 +1,120 @@
+/* ===== NAVBAR CONTAINER ===== */
+.global-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #dddddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== TOP SECTION (LOGO) ===== */
+.global-header-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;   /* center logo */
+  align-items: center;
+  gap: 14px;
+
+  padding: 20px 0;
+  border-bottom: 1px solid #eeeeee;
+  box-sizing: border-box;
+}
+
+/* Logo circle */
+.global-logo-circle {
+  width: 46px;
+  height: 46px;
+  border: 3px solid #f59e0b;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #f59e0b;
+  font-size: 22px;
+  font-weight: 600;
+
+  background: #ffffff;
+}
+
+/* Logo text */
+.global-logo-text {
+  margin: 0;
+  font-size: 52px;
+  font-weight: 300;
+  color: #374151;
+  letter-spacing: -1px;
+}
+
+/* ===== MENU BAR ===== */
+.global-menu-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;  /* center menu */
+  align-items: center;
+  gap: 40px;
+
+  padding: 14px 0;
+  background: #fafafa;
+  font-size: 16px;
+}
+
+/* Links */
+.global-menu-bar a {
+  color: #374151;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 4px;
+  transition: all 0.2s ease;
+}
+
+/* Hover underline animation */
+.global-menu-bar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 0%;
+  height: 2px;
+  background: #f59e0b;
+
+  transition: width 0.3s ease;
+}
+
+.global-menu-bar a:hover {
+  color: #111827;
+}
+
+.global-menu-bar a:hover::after {
+  width: 100%;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .global-logo-text {
+    font-size: 34px;
+  }
+
+  .global-logo-circle {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .global-menu-bar {
+    gap: 20px;
+    font-size: 14px;
+    flex-wrap: wrap;
+    padding: 12px 10px;
+  }
+}

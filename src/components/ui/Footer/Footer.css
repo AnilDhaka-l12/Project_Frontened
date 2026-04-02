@@ -1,0 +1,39 @@
+/* Footer container */
+.footer {
+  border-top: 1px solid #ddd;
+  background: #fafafa;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+/* Footer title */
+.footer-title {
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+/* Links container */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+/* Links */
+.footer-links a {
+  color: #2c7be5;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Email */
+.footer-email {
+  font-size: 14px;
+  color: #555;
+}
