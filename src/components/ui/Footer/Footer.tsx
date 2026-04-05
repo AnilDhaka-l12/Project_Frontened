@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
@@ -6,10 +7,10 @@ function Footer() {
       <p className="footer-title">© 2026 Jupyter Extension Tool</p>
 
       <div className="footer-links">
-        <a href="#">Company Policies</a>
-        <a href="#">Contact Us</a>
-        <a href="#">FAQ</a>
-        <a href="#">Contact Support</a>
+        <Link to="/about">Company Policies</Link>
+        <Link to="/contact">Contact Us</Link>
+        <Link to="/faq">FAQ</Link>
+        <Link to="/support">Contact Support</Link>
       </div>
 
       <p className="footer-email">

@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import UserStats from "../components/UserStats/UserStats";
+import UserActivity from "../components/UserActivity/UserActivity";
 import "../styles/Admin.css";
 
 function Admin() {
@@ -23,6 +25,9 @@ function Admin() {
               Welcome, {user}. Manage your application from here.
             </p>
           </div>
+
+          <UserStats />
+          <UserActivity />
 
           <button className="admin-logout-btn" onClick={handleLogout}>
             Logout

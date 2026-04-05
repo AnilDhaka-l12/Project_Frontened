@@ -1,0 +1,141 @@
+.user-activity {
+  margin-top: 30px;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== TOP SUMMARY CARD ===== */
+.user-activity__summary {
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border: 1px solid #bae6fd;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.user-activity__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0369a1;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.user-activity__total {
+  font-size: 40px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.user-activity__subtext {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* ===== PANEL ===== */
+.user-activity__panel {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== HEADER ===== */
+.user-activity__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.user-activity__header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.user-activity__header p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ===== GRID ===== */
+.user-activity__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+/* ===== CARD ===== */
+.user-activity__card {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  min-height: 100px;
+  transition: 0.2s ease;
+}
+
+.user-activity__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== TEXT ===== */
+.user-activity__time {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.user-activity__count {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 6px;
+}
+
+.user-activity__text {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 4px;
+}
+
+/* ===== COLOR LEVELS ===== */
+.user-activity__card.low {
+  background: #f1f5f9;
+}
+
+.user-activity__card.medium {
+  background: #e0f2fe;
+  border-color: #7dd3fc;
+}
+
+.user-activity__card.high {
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+  .user-activity__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .user-activity__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .user-activity__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
