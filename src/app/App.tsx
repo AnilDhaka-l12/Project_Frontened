@@ -9,6 +9,7 @@ import CookieBanner from "../components/CookieBanner/CookieBanner";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Contact from "../pages/Contact";
 import FAQ from "../pages/FAQ";
+import Support from "../pages/Support";
 import About from "../pages/About";
 
 function AppLayout() {
@@ -30,6 +31,7 @@ function AppLayout() {
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/support" element={<Support />} />
 
           <Route
             path="/admin"

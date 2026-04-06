@@ -1,0 +1,76 @@
+.user-endpoints-container {
+  margin-top: 24px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.user-endpoints-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2d3d;
+  margin-bottom: 20px;
+}
+
+.endpoint-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  border: 1px solid transparent;
+}
+
+.endpoint-method {
+  min-width: 95px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+  padding: 10px 0;
+  border-radius: 6px;
+}
+
+.endpoint-path {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: #1f2d3d;
+}
+
+.get-card {
+  background: #eaf3ff;
+  border-color: #60a5fa;
+}
+
+.post-card {
+  background: #eafaf1;
+  border-color: #34d399;
+}
+
+.put-card {
+  background: #fff4e5;
+  border-color: #f59e0b;
+}
+
+.delete-card {
+  background: #fdecec;
+  border-color: #ef4444;
+}
+
+.get-method {
+  background: #60a5fa;
+}
+
+.post-method {
+  background: #34d399;
+}
+
+.put-method {
+  background: #f59e0b;
+}
+
+.delete-method {
+  background: #ef4444;
+}

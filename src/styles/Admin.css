@@ -18,6 +18,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .admin-label {
@@ -39,6 +41,29 @@
   margin-top: 8px;
   font-size: 15px;
   color: #64748b;
+}
+
+.admin-detail-btn {
+  margin-top: 24px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-detail-btn:hover {
+  opacity: 0.9;
+}
+
+.admin-sections {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .admin-logout-btn {

@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UserStats from "../components/UserStats/UserStats";
 import UserActivity from "../components/UserActivity/UserActivity";
+import UserEndpoints from "../components/admin/UserEndpoints/UserEndpoints";
 import "../styles/Admin.css";
 
 function Admin() {
   const navigate = useNavigate();
+  const [showDetails, setShowDetails] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -26,12 +29,25 @@ function Admin() {
             </p>
           </div>
 
-          <UserStats />
-          <UserActivity />
-
           <button className="admin-logout-btn" onClick={handleLogout}>
             Logout
           </button>
+        </div>
+
+        <button
+          className="admin-detail-btn"
+          onClick={() => setShowDetails(!showDetails)}
+        >
+          {showDetails
+            ? "Hide Detail Static View"
+            : "For detail static view click here"}
+        </button>
+
+        {showDetails && <UserEndpoints />}
+
+        <div className="admin-sections">
+          <UserStats />
+          <UserActivity />
         </div>
       </div>
     </div>
