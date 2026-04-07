@@ -10,6 +10,7 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import Contact from "../pages/Contact";
 import FAQ from "../pages/FAQ";
 import Support from "../pages/Support";
+
 import About from "../pages/About";
 
 function AppLayout() {

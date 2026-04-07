@@ -30,7 +30,7 @@ function GetUsers() {
     <div>
       <div className="endpoint-card get-card" onClick={handleClick}>
         <span className="endpoint-method get-method">GET</span>
-        <span className="endpoint-path">/api/Users</span>
+        <span className="endpoint-path">Users</span>
       </div>
 
       {show && (

@@ -1,6 +1,59 @@
+import { useState } from "react";
 import "../styles/Downloads.css";
+import { apiRequest } from "../utils/api"; // Use apiRequest, not publicRequest
+
+type DownloadResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    downloadUrl: string;
+    expiresInMinutes: number;
+    expiresAt: string;
+    fileKey: string;
+    fileName: string;
+  };
+  error: string | null;
+};
 
 function Downloads() {
+  const [loading, setLoading] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleDownload = async (type: "windows" | "linux") => {
+    try {
+      setLoading(type);
+      setErrorMessage("");
+
+      // Check if user is logged in
+      const authData = localStorage.getItem("auth");
+      if (!authData) {
+        setErrorMessage("Please login first to download files");
+        return;
+      }
+
+      const endpoint = `/api/FileDownload/link/video.mov?expiryMinutes=5`;
+
+      console.log("Calling endpoint with auth:", endpoint);
+
+      // Use apiRequest (sends token automatically)
+      const response = await apiRequest<DownloadResponse>(endpoint, {
+        method: "GET",
+      });
+
+      if (!response.success || !response.data?.downloadUrl) {
+        throw new Error(response.message || "Download link not found");
+      }
+
+      const downloadUrl = response.data.downloadUrl;
+      window.location.href = downloadUrl;
+    } catch (err: any) {
+      console.error("Download failed:", err);
+      setErrorMessage(err.message || "Failed to download file. Please login again.");
+    } finally {
+      setLoading(null);
+    }
+  };
+
   const downloads = [
     {
       title: "Installer Images",
@@ -13,7 +66,7 @@ function Downloads() {
       descriptionBottom:
         "Best choice for full performance and direct access to system hardware.",
       buttonText: "Download for Windows",
-      href: "/downloads/jupyter-extension-tool-windows.exe",
+      type: "windows" as const,
       icon: "🖥️",
       cardClass: "installer-card",
       btnClass: "windows",
@@ -29,7 +82,7 @@ function Downloads() {
       descriptionBottom:
         "Ideal for testing, learning, and running the toolkit without changing your main system.",
       buttonText: "Download for Linux",
-      href: "/downloads/jupyter-extension-tool-linux.tar.gz",
+      type: "linux" as const,
       icon: "📦",
       cardClass: "vm-card",
       btnClass: "linux",
@@ -46,6 +99,12 @@ function Downloads() {
           needs, and environment.
         </p>
       </div>
+
+      {errorMessage && (
+        <p style={{ color: "red", textAlign: "center", marginBottom: "20px" }}>
+          {errorMessage}
+        </p>
+      )}
 
       <div className="downloads-grid">
         {downloads.map((item) => (
@@ -70,14 +129,14 @@ function Downloads() {
             <div className="premium-card-bottom">
               <p>{item.descriptionBottom}</p>
 
-              <a
-                href={item.href}
-                download
+              <button
+                onClick={() => handleDownload(item.type)}
                 className={`premium-download-btn ${item.btnClass}`}
+                disabled={loading === item.type}
               >
                 <span className="btn-icon">↓</span>
-                {item.buttonText}
-              </a>
+                {loading === item.type ? "Preparing..." : item.buttonText}
+              </button>
             </div>
           </article>
         ))}

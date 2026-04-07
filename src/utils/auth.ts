@@ -3,40 +3,45 @@ type AuthData = {
   user: string;
 };
 
-const devAuth: AuthData = {
-  token: "dev-token",
-  user: "developer",
-};
+export async function loginUser(email: string, password: string): Promise<AuthData> {
+  const response = await fetch("http://localhost:5082/api/Auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-// fake login
-export async function loginUser() {
-  return devAuth;
+  if (!response.ok) {
+    throw new Error("Login failed");
+  }
+
+  const data = await response.json();
+  return data;
 }
 
-// do nothing
-export function saveAuth(_: AuthData) {}
-
-// always return fake user
-export function getAuth(): AuthData {
-  return devAuth;
+export function saveAuth(authData: AuthData) {
+  localStorage.setItem("auth", JSON.stringify(authData));
 }
 
-// ✅ needed by temp.tsx
-export function getToken(): string {
-  return devAuth.token;
+export function getAuth(): AuthData | null {
+  const authData = localStorage.getItem("auth");
+  return authData ? JSON.parse(authData) : null;
 }
 
-// ✅ fix your current error
+export function getToken(): string | null {
+  const authData = getAuth();
+  return authData?.token || null;
+}
+
 export function logoutUser() {
-  // do nothing (login disabled)
+  localStorage.removeItem("auth");
 }
 
-// also keep this (some files may use it)
 export function logout() {
-  // do nothing
+  localStorage.removeItem("auth");
 }
 
-// always authenticated
 export function isAuthenticated(): boolean {
-  return true;
+  return !!getToken();
 }

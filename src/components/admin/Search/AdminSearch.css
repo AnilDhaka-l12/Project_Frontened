@@ -1,0 +1,27 @@
+.admin-search {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.admin-search input {
+  width: 290px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+
+  color: #111827;
+  background-color: #ffffff;
+}
+
+.admin-search input::placeholder {
+  color: #9ca3af;
+}
+
+.admin-search input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
