@@ -1,5 +1,5 @@
 import "./UserEndpoints.css";
-import GetUsers from "./GetUsers";
+import GetPaginatedUsers from "./GetPaginatedUsers";
 import PostUser from "./PostUser";
 import GetUserById from "./GetUserById";
 import PutUser from "./PutUser";
@@ -16,7 +16,7 @@ function UserEndpoints({ searchTerm }: UserEndpointsProps) {
   const normalizedSearch = searchTerm.toLowerCase().trim();
 
   const endpoints = [
-    { label: "Get Users", component: <GetUsers /> },
+    { label: "Get Users", component: <GetPaginatedUsers /> },
     { label: "Post User", component: <PostUser /> },
     { label: "Get User By Id", component: <GetUserById /> },
     { label: "Put User", component: <PutUser /> },

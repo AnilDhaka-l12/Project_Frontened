@@ -200,15 +200,6 @@
   color: #475569;
 }
 
-/* STATS */
-.stats-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
-  padding: 30px 20px 90px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
 
 .stat-box {
   background: white;

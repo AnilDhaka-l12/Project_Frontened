@@ -14,21 +14,22 @@ function About() {
           <div className="about-card">
             <h3>Our Mission</h3>
             <p>
-              To simplify learning and development through useful tools.
+              Make Jupyter Notebook setup less painful.
+              That's it. We want students to stop wasting hours on CUDA and TensorFlow errors.
             </p>
           </div>
 
           <div className="about-card">
             <h3>Our Vision</h3>
             <p>
-              To create a modern space for developers to grow and build.
+              A tool that just works. Download, put your email, and start coding. No terminal fighting.
             </p>
           </div>
 
           <div className="about-card">
             <h3>Our Goal</h3>
             <p>
-              Make development faster, easier, and more accessible.
+              Make development faster, easier, and more accessible for everyone who uses Jupyter Notebook.
             </p>
           </div>
         </div>

@@ -15,6 +15,8 @@ function Navbar() {
         <Link to="/">Blogs</Link>
         <Link to="/downloads">Downloads</Link>
         <Link to="/about">About Us</Link>
+        <Link to="/documentation">Documentation</Link>
+
       </nav>
     </header>
   );

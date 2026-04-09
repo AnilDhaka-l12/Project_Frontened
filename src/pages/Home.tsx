@@ -29,7 +29,7 @@ function Home() {
           <h2>Why Jupyter Toolkit?</h2>
           <p>
             Everything you need in one place to learn faster, work better, and
-            create modern digital solutions.
+            create modern digital solutions.Stop fixing setup. Start actually learning.
           </p>
         </div>
 
@@ -60,21 +60,6 @@ function Home() {
               platform focused on simplicity and performance.
             </p>
           </div>
-        </div>
-      </section>
-
-      <section className="stats-section">
-        <div className="stat-box">
-          <h3>100+</h3>
-          <p>Helpful Resources</p>
-        </div>
-        <div className="stat-box">
-          <h3>50+</h3>
-          <p>Modern Tools</p>
-        </div>
-        <div className="stat-box">
-          <h3>24/7</h3>
-          <p>Accessible Learning</p>
         </div>
       </section>
 
