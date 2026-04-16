@@ -13,7 +13,9 @@ function Navbar() {
         <Link to="/">Home</Link>
         <Link to="/">Developer Community</Link>
         <Link to="/">Blogs</Link>
-        <Link to="/downloads">Downloads</Link>
+        <Link to="/downloads" state={{ openEmailCheck: true }}>
+          Downloads
+        </Link>
         <Link to="/about">About Us</Link>
         <Link to="/documentation">Documentation</Link>
 

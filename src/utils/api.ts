@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function apiRequest<T>(
   endpoint: string,
@@ -6,7 +6,6 @@ export async function apiRequest<T>(
 ): Promise<T> {
   const authData = localStorage.getItem("auth");
   const parsedAuth = authData ? JSON.parse(authData) : null;
-
   const token = parsedAuth?.token;
 
   const response = await fetch(`${API_URL}${endpoint}`, {
