@@ -1,39 +1,119 @@
-/* Footer container */
+/* Footer.css - Professional Multi-Column Layout */
+
 .footer {
-  border-top: 1px solid #ddd;
-  background: #fafafa;
-  padding: 25px 20px;
-  text-align: center;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+  padding: 48px 32px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Footer title */
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .footer-title {
-  font-weight: 500;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  background: linear-gradient(135deg, #60a5fa, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Links container */
+.footer-copyright {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .footer-links {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Links */
 .footer-links a {
-  color: #2c7be5;
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  width: fit-content;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+  color: #60a5fa;
+  transform: translateX(4px);
 }
 
-/* Email */
 .footer-email {
-  font-size: 14px;
-  color: #555;
+  margin: 0 0 16px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.footer-social a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer-social a:hover {
+  color: #60a5fa;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 24px 24px;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-section {
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0 auto;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
 }
