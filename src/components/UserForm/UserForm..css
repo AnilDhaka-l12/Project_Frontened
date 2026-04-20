@@ -1,0 +1,54 @@
+.userform-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.userform-modal {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 400px;
+}
+
+.userform-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.userform-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.userform-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  background: #ddd;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+.submit-btn {
+  background: #2563eb;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+.userform-error {
+  color: red;
+  font-size: 14px;
+}

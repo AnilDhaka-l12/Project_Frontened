@@ -12,6 +12,8 @@ import FAQ from "../pages/FAQ";
 import Support from "../pages/Support";
 import Documentation from "../pages/Documentation";
 import About from "../pages/About";
+import Blogs from "../pages/Blogs";
+
 
 function AppLayout() {
   const location = useLocation();
@@ -31,6 +33,7 @@ function AppLayout() {
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/login" element={<Login />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blogs" element={<Blogs />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/support" element={<Support />} />
           <Route path="/documentation" element={<Documentation />} />

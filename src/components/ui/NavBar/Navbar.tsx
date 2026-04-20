@@ -12,7 +12,7 @@ function Navbar() {
       <nav className="global-menu-bar">
         <Link to="/">Home</Link>
         <Link to="/">Developer Community</Link>
-        <Link to="/">Blogs</Link>
+        <Link to="/blogs">Blogs</Link>
         <Link to="/downloads" state={{ openEmailCheck: true }}>
           Downloads
         </Link>
