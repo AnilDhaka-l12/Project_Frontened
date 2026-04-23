@@ -55,6 +55,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .paginated-users-filters button:hover,
@@ -89,7 +90,7 @@
 
 .paginated-users-table {
   width: 100%;
-  min-width: 900px;
+  min-width: 1050px;
   border-collapse: collapse;
 }
 
@@ -104,6 +105,7 @@
   border-bottom: 1px solid #e2e8f0;
   font-size: 14px;
   color: #334155;
+  vertical-align: middle;
 }
 
 .paginated-users-table th {
@@ -111,7 +113,11 @@
   font-weight: 700;
 }
 
-.paginated-users-empty {
+.paginated-users-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.paginated-empty {
   text-align: center;
   padding: 24px;
   color: #64748b;
@@ -121,10 +127,11 @@
 .paginated-badge-active,
 .paginated-badge-inactive {
   display: inline-block;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .paginated-badge-active {
@@ -135,6 +142,47 @@
 .paginated-badge-inactive {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.paginated-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.paginated-edit-btn,
+.paginated-delete-btn {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.paginated-edit-btn:hover,
+.paginated-delete-btn:hover {
+  transform: translateY(-1px);
+}
+
+.paginated-edit-btn {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.paginated-edit-btn:hover {
+  background: #d97706;
+}
+
+.paginated-delete-btn {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.paginated-delete-btn:hover {
+  background: #dc2626;
 }
 
 .paginated-users-pagination {
@@ -158,6 +206,151 @@
   font-weight: 600;
 }
 
+.edit-user-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.edit-user-modal {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+  padding: 24px;
+}
+
+.edit-user-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.edit-user-modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.edit-user-close-btn {
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.edit-user-close-btn:hover {
+  color: #0f172a;
+}
+
+.edit-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.edit-user-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.edit-user-form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.edit-user-form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 14px;
+  outline: none;
+  color: #0f172a;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.edit-user-form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.edit-user-checkbox-row {
+  margin-top: 4px;
+}
+
+.edit-user-checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.edit-user-checkbox-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.edit-user-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.edit-user-cancel-btn,
+.edit-user-save-btn {
+  border: none;
+  padding: 11px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.edit-user-cancel-btn {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.edit-user-cancel-btn:hover {
+  background: #cbd5e1;
+}
+
+.edit-user-save-btn {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.edit-user-save-btn:hover {
+  background: #1d4ed8;
+}
+
+.edit-user-save-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .paginated-users-filters {
     flex-direction: column;
@@ -172,5 +365,37 @@
 
   .paginated-users-title {
     font-size: 20px;
+  }
+
+  .paginated-users-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .paginated-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .paginated-edit-btn,
+  .paginated-delete-btn {
+    width: 100%;
+  }
+
+  .edit-user-modal {
+    padding: 18px;
+  }
+
+  .edit-user-modal-actions {
+    flex-direction: column;
+  }
+
+  .edit-user-cancel-btn,
+  .edit-user-save-btn {
+    width: 100%;
+  }
+
+  .name-row {
+    grid-template-columns: 1fr;
   }
 }
