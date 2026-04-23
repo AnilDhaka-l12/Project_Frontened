@@ -12,14 +12,14 @@
 .documentation-page h1 {
   font-size: 38px;
   margin-bottom: 12px;
-  color: #111827;
+  color: #1f2937;
 }
 
 /* Intro text */
 .doc-intro {
   font-size: 16px;
   line-height: 1.7;
-  color: #4b5563;
+  color: #6b7280;
   margin-bottom: 30px;
 }
 
@@ -32,10 +32,7 @@
 .doc-section h2 {
   font-size: 28px;
   margin-bottom: 14px;
-  color: #2563eb;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: #f37726;
 }
 
 /* Sub headings */
@@ -76,11 +73,11 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  background: #f3f4f6;
+  background: #fff7f2;
   padding: 18px 20px;
   margin: 10px 0 20px 0;
   border-radius: 10px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #f3d3be;
   overflow-x: auto;
 }
 
@@ -88,13 +85,13 @@
 .code-block code {
   font-family: "Courier New", monospace;
   font-size: 15px;
-  color: #111827;
+  color: #7c2d12;
   white-space: nowrap;
 }
 
 /* Copy button */
 .code-block button {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #f9a03f, #f37726);
   color: white;
   border: none;
   padding: 8px 14px;
@@ -108,7 +105,7 @@
 
 /* Hover effect */
 .code-block button:hover {
-  background-color: #1d4ed8;
+  background: linear-gradient(135deg, #f37726, #e36209);
 }
 
 /* Active click */

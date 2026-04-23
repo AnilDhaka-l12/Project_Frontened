@@ -23,6 +23,13 @@ type DownloadItem = {
   versions: VersionItem[];
 };
 
+type ApiResponse = {
+  message?: string;
+  data?: {
+    downloadUrl?: string;
+  };
+};
+
 const TOKEN_EXPIRY_BUFFER_MS = 60000;
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
@@ -44,15 +51,15 @@ function Downloads() {
 
   const downloads: DownloadItem[] = [
     {
-      title: "Installer Images",
+      title: "Windows Version",
       badge: "Recommended",
       descriptionTop: [
-        "Direct access to hardware",
-        "Customized kernel support",
-        "No virtualization overhead",
+        "Easy setup for notebook users",
+        "Supports Docker-based workflow",
+        "Quick start for machine learning work",
       ],
       descriptionBottom:
-        "Best choice for full performance and direct access to system hardware.",
+        "A simple option for Windows users who want an easier Jupyter Notebook setup.",
       buttonText: "Download for Windows",
       icon: "🪟",
       cardClass: "installer-card",
@@ -65,15 +72,15 @@ function Downloads() {
       ],
     },
     {
-      title: "Virtual Machines",
-      badge: "Flexible Setup",
+      title: "Linux Version",
+      badge: "Flexible",
       descriptionTop: [
-        "Snapshots functionality",
-        "Isolated environment",
-        "Quick installation workflow",
+        "Reliable environment setup",
+        "Good for testing and development",
+        "Supports notebook workflow needs",
       ],
       descriptionBottom:
-        "Ideal for testing, learning, and running the toolkit without changing your main system.",
+        "A flexible option for Linux users who want a smoother notebook workflow.",
       buttonText: "Download for Linux",
       icon: "🐧",
       cardClass: "vm-card",
@@ -138,7 +145,7 @@ function Downloads() {
   }, []);
 
   const sanitizeFileName = (fileName: string): string => {
-    return fileName.replace(/\.\./g, "").replace(/[\/\\]/g, "");
+    return fileName.replace(/\.\./g, "").replace(/[/\\]/g, "");
   };
 
   const isValidEmail = (email: string): boolean => {
@@ -241,13 +248,13 @@ function Downloads() {
         }
       );
 
-      let result: any = null;
+      let result: ApiResponse | null = null;
       const contentType = response.headers.get("content-type");
 
       if (contentType?.includes("application/json")) {
         try {
           const text = await response.text();
-          result = text ? JSON.parse(text) : null;
+          result = text ? (JSON.parse(text) as ApiResponse) : null;
         } catch {
           result = null;
         }
@@ -285,18 +292,21 @@ function Downloads() {
       setMessageType("success");
       setMessage("Download started successfully!");
       setDownloadAttempts(0);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setMessageType("error");
 
-      if (err?.message?.includes("Failed to fetch")) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Download failed. Please try again.";
+
+      if (errorMessage.includes("Failed to fetch")) {
         setMessage("Network error. Please check your connection and try again.");
       } else if (
-        err?.message?.includes("Authentication") ||
-        err?.message?.includes("session has expired")
+        errorMessage.includes("Authentication") ||
+        errorMessage.includes("session has expired")
       ) {
         setMessage("Please log in to continue.");
       } else {
-        setMessage(err?.message || "Download failed. Please try again.");
+        setMessage(errorMessage);
       }
 
       console.error("Download error:", err);
@@ -355,13 +365,13 @@ function Downloads() {
         }
       );
 
-      let data: any = null;
+      let data: ApiResponse | null = null;
       const contentType = response.headers.get("content-type");
 
       if (contentType?.includes("application/json")) {
         try {
           const text = await response.text();
-          data = text ? JSON.parse(text) : null;
+          data = text ? (JSON.parse(text) as ApiResponse) : null;
         } catch {
           data = null;
         }
@@ -392,15 +402,18 @@ function Downloads() {
         await startDownload(pendingFileName);
         setPendingFileName(null);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setMessageType("error");
 
-      if (err?.message?.includes("Failed to fetch")) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to verify email.";
+
+      if (errorMessage.includes("Failed to fetch")) {
         setMessage("Network error. Please check your connection.");
-      } else if (err?.message?.includes("session has expired")) {
+      } else if (errorMessage.includes("session has expired")) {
         setMessage("Please log in to continue.");
       } else {
-        setMessage(err?.message || "Failed to verify email.");
+        setMessage(errorMessage);
       }
 
       console.error("Email check error:", err);

@@ -1,0 +1,201 @@
+/* Root Colors */
+:root {
+  --orange: #f37726;
+  --orange-dark: #e36209;
+  --orange-light: #f9a03f;
+  --white: #ffffff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --border: #e5e7eb;
+}
+
+/* Page */
+.community-page {
+  background: var(--white);
+  color: var(--text-dark);
+  padding-bottom: 80px;
+}
+
+/* ================= HERO ================= */
+
+.community-hero {
+  padding: 80px 20px 60px;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    #fff7f2 0%,
+    #ffffff 100%
+  );
+}
+
+.community-hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.community-badge {
+  display: inline-block;
+  background: rgba(243, 119, 38, 0.1);
+  color: var(--orange);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+
+.community-hero h1 {
+  font-size: 36px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.community-hero p {
+  color: var(--text-light);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+
+.community-hero-actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.community-btn {
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+
+/* Primary */
+.community-btn.primary {
+  background: var(--orange);
+  color: white;
+}
+
+.community-btn.primary:hover {
+  background: var(--orange-dark);
+}
+
+/* Secondary */
+.community-btn.secondary {
+  background: white;
+  border: 1px solid var(--border);
+}
+
+.community-btn.secondary:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* ================= FEATURES ================= */
+
+.community-features {
+  padding: 60px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-heading span {
+  color: var(--orange);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.section-heading h2 {
+  font-size: 28px;
+  margin: 10px 0;
+}
+
+.section-heading p {
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Grid */
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Cards */
+
+.feature-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  background: white;
+  transition: 0.25s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--orange);
+  transform: translateY(-4px);
+}
+
+.feature-card h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.feature-card p {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ================= CTA ================= */
+
+.community-cta {
+  margin-top: 60px;
+  padding: 60px 20px;
+  background: linear-gradient(
+    135deg,
+    var(--orange),
+    var(--orange-light)
+  );
+  color: white;
+  text-align: center;
+}
+
+.community-cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.community-cta h2 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.community-cta p {
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+/* CTA button override */
+
+.community-cta .community-btn.primary {
+  background: white;
+  color: var(--orange);
+}
+
+.community-cta .community-btn.primary:hover {
+  background: #f3f4f6;
+}

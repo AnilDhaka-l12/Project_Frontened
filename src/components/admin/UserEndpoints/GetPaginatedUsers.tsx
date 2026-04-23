@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { apiRequest } from "../../../utils/api";
 import "./GetPaginatedUsers.css";
 
@@ -47,36 +47,39 @@ function GetPaginatedUsers() {
     isActive: false,
   });
 
-  const fetchUsers = async (page = pageNumber) => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchUsers = useCallback(
+    async (page = pageNumber) => {
+      try {
+        setLoading(true);
+        setError("");
 
-      const query = new URLSearchParams();
-      query.append("PageNumber", String(page));
-      query.append("PageSize", "10");
+        const query = new URLSearchParams();
+        query.append("PageNumber", String(page));
+        query.append("PageSize", "10");
 
-      if (organization.trim()) {
-        query.append("Organization", organization.trim());
+        if (organization.trim()) {
+          query.append("Organization", organization.trim());
+        }
+
+        const response = await apiRequest<PaginatedResponse>(
+          `/api/Users/paginated?${query.toString()}`
+        );
+
+        setData(response);
+        setPageNumber(page);
+      } catch (err) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : "Failed to load users.");
+      } finally {
+        setLoading(false);
       }
-
-      const response = await apiRequest<PaginatedResponse>(
-        `/api/Users/paginated?${query.toString()}`
-      );
-
-      setData(response);
-      setPageNumber(page);
-    } catch (err) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : "Failed to load users.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [pageNumber, organization]
+  );
 
   useEffect(() => {
     fetchUsers(1);
-  }, []);
+  }, [fetchUsers]);
 
   const handleEditClick = async (userId: string) => {
     try {

@@ -1,8 +1,7 @@
 import "./UserActivity.css";
 
 function UserActivity() {
-  const totalActiveUsers = 1248;
-
+  
   const hourlyData = [
     { time: "00:00", users: 5 },
     { time: "01:00", users: 3 },

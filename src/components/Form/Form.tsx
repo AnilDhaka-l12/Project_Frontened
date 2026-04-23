@@ -86,8 +86,12 @@ function UserForm({ onClose, onSuccess, initialEmail = "" }: Props) {
       }
 
       onSuccess();
-    } catch (err: any) {
-      setError(err.message || "Failed to submit the form.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Failed to submit the form.");
+      } else {
+        setError("Failed to submit the form.");
+      }
     } finally {
       setSubmitting(false);
     }

@@ -21,484 +21,315 @@ function Blogs() {
     {
       id: 1,
       category: "Featured",
-      title: "How to Set Up Jupyter Notebook Toolkit for the First Time",
+      title: "Why Setting Up Jupyter Notebook for Machine Learning Is So Difficult",
       description:
-        "Learn how to install, configure, and start using Jupyter Notebook Toolkit with a modern beginner-friendly setup process designed for speed, simplicity, and productivity.",
-      content: `# Getting Started with Jupyter Notebook Toolkit
+        "Many users struggle with CUDA, cuDNN, and TensorFlow compatibility. This article explains why setup becomes frustrating and how automation can solve it.",
+      content: `# Why Setting Up Jupyter Notebook for Machine Learning Is So Difficult
 
 ## Introduction
-Setting up Jupyter Notebook Toolkit is easier than ever. This comprehensive guide will walk you through every step of the installation process, ensuring you have a smooth setup experience.
+Jupyter Notebook is widely used by students and developers for machine learning and AI work. Even though the notebook itself is easy to start, the full setup becomes difficult when GPU support is required.
 
-## Prerequisites
-Before we begin, make sure you have:
-- Python 3.8 or higher installed
-- pip (Python package manager)
-- At least 4GB of free RAM
-- A modern web browser
+## The Main Problem
+Users often need to install CUDA, cuDNN, TensorFlow, and other dependencies manually. These tools must match each other correctly. If the versions do not match, users face installation errors, broken environments, and wasted time.
 
-## Step 1: Installation
-First, open your terminal and run:
-\`\`\`bash
-pip install jupyter-notebook-toolkit
-\`\`\`
+## Why This Causes Problems
+Manual setup usually creates several issues:
+- Version mismatch between CUDA and TensorFlow
+- Missing drivers or unsupported GPU configuration
+- Errors during package installation
+- Different setup steps for different operating systems
+- Time lost fixing problems instead of learning or building
 
-This command installs the core toolkit along with essential dependencies.
+## Why Students and Developers Need a Better Solution
+Students who are learning machine learning often want to start quickly. Developers also need stable environments so they can focus on models, data, and notebooks instead of spending hours debugging setup issues.
 
-## Step 2: Initial Configuration
-After installation, run the setup wizard:
-\`\`\`bash
-jupyter-toolkit setup
-\`\`\`
+## A Better Approach
+A better solution is to automate the environment. Instead of installing everything manually, users can start from a prepared setup that already includes the required tools and dependencies.
 
-The wizard will guide you through:
-- Setting your workspace directory
-- Configuring default kernels
-- Choosing your preferred theme
+## What Our Toolkit Aims to Do
+Our project focuses on making Jupyter Notebook setup easier by:
+1. Creating a ready-to-use environment with Docker
+2. Launching Jupyter Notebook automatically in the browser
+3. Reducing manual configuration work
+4. Supporting a smoother machine learning workflow
 
-## Step 3: Launch the Interface
-Start the toolkit with:
-\`\`\`bash
-jupyter-toolkit start
-\`\`\`
-
-Your default browser will open automatically to http://localhost:8888
-
-## Step 4: Create Your First Notebook
-Click "New Notebook" in the dashboard, select your kernel, and start coding! The interface is intuitive and responsive.
-
-## Pro Tips
-- Use keyboard shortcuts for faster navigation
-- Enable autosave in settings
-- Install community extensions for additional features
-
-## Troubleshooting
-If you encounter any issues, try:
-1. Clearing your browser cache
-2. Running \`jupyter-toolkit reset\`
-3. Checking the logs at \`~/.jupyter-toolkit/logs\`
-
-## Next Steps
-Now that you're set up, explore our other guides on:
-- Advanced notebook features
-- Collaborative editing
-- Deployment options`,
+## Conclusion
+The difficulty is not Jupyter Notebook itself. The real problem is the environment around it. By automating setup, users can spend less time fixing systems and more time learning, experimenting, and building projects.`,
       author: "Admin Team",
-      date: "April 16, 2026",
+      date: "April 23, 2026",
       readTime: "5 min read",
       featured: true,
     },
     {
       id: 2,
-      category: "Productivity",
-      title: "Top Features That Make Jupyter Notebook Toolkit Easier to Use",
+      category: "Guides",
+      title: "How Docker Makes Jupyter Notebook Setup Easier",
       description:
-        "Explore the most useful features that help developers, students, and researchers work more efficiently every day.",
-      content: `# Productivity Features You'll Love
+        "Docker helps create a consistent environment for machine learning tools and reduces the risk of installation and compatibility problems.",
+      content: `# How Docker Makes Jupyter Notebook Setup Easier
 
-## Smart Code Completion
-The toolkit features intelligent autocomplete that learns from your coding patterns. It suggests functions, variables, and imports based on context.
+## Introduction
+Docker helps package an application and all of its dependencies inside a container. For machine learning work, this means users can avoid many manual installation steps.
 
-## Split-Screen View
-Work on multiple notebooks simultaneously with the split-screen feature. Perfect for comparing code or referencing documentation while coding.
+## Why Docker Is Useful
+Instead of installing every dependency separately, Docker allows users to run a prepared environment. This can include:
+- CUDA support
+- cuDNN
+- TensorFlow
+- Python packages
+- Jupyter Notebook
 
-## Integrated Terminal
-Access a full terminal within the interface. Run shell commands, manage environments, and execute scripts without leaving the toolkit.
+## Key Benefits
+### Consistency
+The same environment can run on different systems without changing the setup steps.
 
-## Markdown Preview
-Write documentation in Markdown and see a live preview as you type. Export to HTML, PDF, or LaTeX with one click.
+### Reduced Errors
+Since dependencies are already prepared together, users do not need to worry as much about version mismatch problems.
 
-## Variable Explorer
-Track all your variables in real-time. See their types, values, and memory usage at a glance.
+### Faster Setup
+Users can start more quickly because they do not need to install and configure everything manually.
 
-## Keyboard Shortcuts
-Master these essential shortcuts:
-- \`Cmd/Ctrl + Enter\`: Run current cell
-- \`Shift + Enter\`: Run cell and select next
-- \`Alt + Enter\`: Run cell and insert below
-- \`Cmd/Ctrl + /\`: Comment/uncomment
+### Easier Maintenance
+Changes can be managed by updating the Docker image instead of reinstalling tools again and again.
 
-## Version Control Integration
-Built-in Git support lets you track changes, create branches, and collaborate with team members seamlessly.
+## Example Workflow
+1. Install Docker
+2. Download the project
+3. Run the container
+4. Open Jupyter Notebook in the browser
 
-## Custom Themes
-Choose from light, dark, and high-contrast themes. Create custom themes with CSS variables.
+## Why It Fits Our Project
+Our toolkit uses Docker because it gives users a simpler and more reliable way to start working. This is especially useful for students and developers who want to focus on notebooks and machine learning instead of environment troubleshooting.
 
-## Performance Profiling
-Identify bottlenecks with the built-in profiler. See exactly which functions are consuming the most time and memory.`,
+## Conclusion
+Docker is one of the most practical ways to simplify Jupyter Notebook setup. It makes the environment more stable, repeatable, and user friendly.`,
       author: "Admin Team",
-      date: "April 16, 2026",
+      date: "April 23, 2026",
       readTime: "4 min read",
     },
     {
       id: 3,
-      category: "Guides",
-      title: "Windows vs Linux: Which Download Option Should You Choose?",
+      category: "Productivity",
+      title: "Why Automatic Notebook Launch Improves Workflow",
       description:
-        "A quick comparison to help you decide whether installer images or virtual machines are the better option for your workflow.",
-      content: `# Windows vs Linux: Making the Right Choice
+        "Opening Jupyter Notebook automatically after setup saves time, removes extra steps, and creates a smoother user experience.",
+      content: `# Why Automatic Notebook Launch Improves Workflow
 
-## Windows Installation
+## Introduction
+After environment setup, users still need to manually start Jupyter Notebook and open it in the browser. Even though this seems simple, it adds extra steps to the workflow.
 
-### Advantages
-- Native performance without virtualization overhead
-- Seamless integration with Windows Explorer
-- Direct access to GPU for machine learning tasks
-- Easier for users familiar with Windows environment
+## The Manual Process
+Without automation, users often need to:
+- Open a terminal
+- Navigate to the correct folder
+- Start Jupyter Notebook manually
+- Copy the local address
+- Open it in the browser
 
-### Installation Options
-1. **Installer (.exe)** - Recommended for most users
-   - Automatic PATH configuration
-   - Desktop shortcuts included
-   - Easy uninstallation
+## Why This Matters
+For repeated use, these small steps become repetitive. New users may also be confused by terminal commands and local URLs.
 
-2. **Portable Version**
-   - Run from USB drive
-   - No admin rights required
-   - Self-contained environment
+## Benefits of Auto Launch
+### Simpler User Experience
+Users do not need to remember commands.
 
-## Linux Installation
+### Faster Start
+The notebook becomes available immediately after setup.
 
-### Advantages
-- Better package management with apt/yum
-- Superior terminal integration
-- Lower memory footprint
-- Better for server deployments
+### Better Accessibility
+Students and beginners can start using the tool without technical confusion.
 
-### Installation Methods
-1. **Package Manager**
-   \`\`\`bash
-   sudo apt-get install jupyter-toolkit
-   \`\`\`
+### More Professional Workflow
+Automatic launch makes the platform feel smoother and more complete.
 
-2. **Snap Package**
-   \`\`\`bash
-   sudo snap install jupyter-toolkit
-   \`\`\`
+## Role in Our Project
+Our toolkit aims to reduce unnecessary manual work. Automatic notebook launch supports that goal by making the transition from setup to real use much easier.
 
-3. **Docker Container**
-   \`\`\`bash
-   docker pull jupyter/toolkit:latest
-   \`\`\`
-
-## Virtual Machine Option
-Consider a VM if you:
-- Need isolated environments
-- Test different OS configurations
-- Want snapshot/rollback capabilities
-
-### Recommended VM Software
-- VirtualBox (Free)
-- VMware Workstation (Paid)
-- Hyper-V (Windows Pro)
-
-## Performance Comparison
-
-| Metric | Windows Native | Linux Native | VM |
-|--------|--------------|--------------|-----|
-| Startup Time | 2-3s | 1-2s | 8-12s |
-| RAM Usage | 400MB | 250MB | 1.2GB |
-| GPU Access | Full | Full | Limited |
-
-## Recommendation
-- **Windows users**: Use the native installer for best performance
-- **Linux users**: Install via package manager for system integration
-- **Cross-platform teams**: Consider Docker for consistency
-- **Testing/Development**: Use VMs for isolated environments`,
+## Conclusion
+A smoother launch process helps users focus on actual work instead of setup steps. This is an important part of making the toolkit practical and user friendly.`,
       author: "Admin Team",
-      date: "April 16, 2026",
-      readTime: "6 min read",
+      date: "April 23, 2026",
+      readTime: "4 min read",
     },
     {
       id: 4,
       category: "Updates",
-      title: "What's New in the Latest Toolkit Versions",
+      title: "Project Progress: Main Features We Are Building",
       description:
-        "Stay up to date with recent improvements, bug fixes, and planned enhancements for the toolkit platform.",
-      content: `# Latest Updates and Improvements
+        "This update explains the key features of the project and how they support students and developers using Jupyter Notebook.",
+      content: `# Project Progress: Main Features We Are Building
 
-## Version 2.5.0 (April 2026)
+## Introduction
+Our project is focused on simplifying Jupyter Notebook setup and workflow management for machine learning users.
 
-### 🚀 New Features
-- **AI-Powered Code Suggestions**: Get intelligent completions powered by machine learning
-- **Real-time Collaboration**: Edit notebooks simultaneously with team members
-- **Enhanced Debugger**: Set conditional breakpoints and watch expressions
-- **Notebook Templates**: Start projects faster with pre-built templates
+## Core Features
+### Automatic Environment Setup
+The system creates a prepared Docker environment that includes the required dependencies.
 
-### ⚡ Performance Improvements
-- 40% faster notebook loading
-- 60% reduction in memory usage for large datasets
-- Optimized rendering for notebooks with 1000+ cells
+### Notebook Auto Launch
+Jupyter Notebook opens automatically in the browser once the environment is ready.
 
-### 🐛 Bug Fixes
-- Fixed autosave conflicts in collaborative sessions
-- Resolved kernel connection issues on macOS
-- Fixed Markdown rendering for complex tables
-- Addressed memory leak in variable explorer
+### Auto GitHub Commit
+The system detects file changes and helps automate commits to GitHub.
 
-## Version 2.4.2 (March 2026)
+## Why These Features Matter
+These features reduce setup complexity, save time, and improve workflow efficiency. Users do not need to repeat the same manual tasks again and again.
 
-### Improvements
-- Better error messages for import failures
-- Enhanced support for Python 3.12
-- Updated documentation with video tutorials
+## Current Direction
+The current focus is on building a working prototype that shows:
+- a simple frontend interface
+- backend support
+- Docker-based environment setup
+- notebook launch flow
+- GitHub workflow support
 
-### Security Updates
-- Patched XSS vulnerability in Markdown preview
-- Updated authentication mechanism for remote access
-- Improved token generation for sharing notebooks
+## Success Goals
+We want the prototype to:
+1. Run successfully
+2. Open Jupyter Notebook without issue
+3. Support automatic workflow features
+4. Be simple enough for regular users to understand
 
-## Coming Soon in 2.6.0
-- Native support for R and Julia kernels
-- Integrated data visualization dashboard
-- Mobile-responsive interface
-- Offline mode with sync capabilities
-
-## Upgrade Instructions
-\`\`\`bash
-pip install --upgrade jupyter-notebook-toolkit
-\`\`\`
-
-For Docker users:
-\`\`\`bash
-docker pull jupyter/toolkit:2.5.0
-\`\`\``,
+## Conclusion
+The project is designed to solve real setup problems. The more we automate, the more useful the toolkit becomes for students and developers.`,
       author: "Admin Team",
-      date: "April 16, 2026",
+      date: "April 23, 2026",
       readTime: "3 min read",
     },
     {
       id: 5,
       category: "Tips",
-      title: "Best Practices for Organizing Your Notebook Workflow",
+      title: "Best Practices for Managing Jupyter Notebook Work",
       description:
-        "Use these practical tips to keep your notebooks clean, maintainable, and easier to share with others.",
-      content: `# Organizing Your Notebook Workflow
+        "Good notebook workflow is not only about coding. Organization, saving changes, and tracking progress also matter.",
+      content: `# Best Practices for Managing Jupyter Notebook Work
 
-## Folder Structure
-Maintain a consistent folder hierarchy:
-\`\`\`
-project/
-├── notebooks/
-│   ├── 01_data_exploration/
-│   ├── 02_feature_engineering/
-│   └── 03_modeling/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── src/
-│   └── utils.py
-└── outputs/
-    ├── figures/
-    └── models/
-\`\`\`
+## Introduction
+A good notebook workflow helps users stay organized and reduces mistakes during development.
 
-## Naming Conventions
-Use descriptive prefixes:
-- \`eda_\` - Exploratory analysis
-- \`prep_\` - Data preparation
-- \`model_\` - Model training
-- \`eval_\` - Evaluation
-- \`viz_\` - Visualization
+## Recommended Practices
+### Keep Notebooks Organized
+Use clear names and separate notebooks by task or topic.
 
-Example: \`2026-04-16_eda_customer_churn.ipynb\`
+### Save Work Regularly
+Even with automation, users should maintain good habits around saving progress and reviewing changes.
 
-## Notebook Structure Template
-1. **Title and Description**
-2. **Imports** (alphabetically organized)
-3. **Configuration** (paths, constants)
-4. **Helper Functions**
-5. **Main Analysis** (with clear section headers)
-6. **Results Summary**
-7. **Next Steps**
+### Track Changes in GitHub
+Version control helps users understand what changed over time and protects work from being lost.
 
-## Version Control Tips
-- Clear output before committing
-- Use \`.gitignore\` for data files
-- Commit notebooks as both .ipynb and .py
-- Write meaningful commit messages
+### Use Clear Project Structure
+Keep notebooks, data files, and outputs in organized folders.
 
-## Code Quality
-- Use type hints for function parameters
-- Add docstrings to functions
-- Keep cells focused (one operation per cell)
-- Remove dead code and unused imports
+## Why This Matters
+Machine learning work often changes quickly. Without structure, projects become harder to maintain and harder to share with others.
 
-## Performance Optimization
-- Cache expensive computations
-- Use vectorized operations over loops
-- Monitor memory with \`%memit\`
-- Profile code with \`%prun\`
+## How Our Toolkit Helps
+The toolkit is designed to support better workflow by reducing setup burden and supporting automatic GitHub-related actions.
 
-## Sharing Best Practices
-- Clear all outputs before sharing
-- Use nbviewer for public notebooks
-- Include requirements.txt or environment.yml
-- Add badges for build status and dependencies
-
-## Automation
-Create a \`setup.py\` file:
-\`\`\`python
-from setuptools import setup, find_packages
-
-setup(
-    name="my_project",
-    version="0.1.0",
-    packages=find_packages(),
-    install_requires=[
-        "jupyter-notebook-toolkit>=2.5.0",
-        "pandas>=2.0.0",
-        "numpy>=1.24.0"
-    ]
-)
-\`\`\``,
+## Conclusion
+Better organization improves productivity. The toolkit is not only about setup; it also supports a more stable and manageable notebook workflow.`,
       author: "Admin Team",
-      date: "April 16, 2026",
+      date: "April 23, 2026",
       readTime: "5 min read",
     },
     {
       id: 6,
       category: "Community",
-      title: "How Developers Can Use the Toolkit for Faster Experimentation",
+      title: "How Students and Developers Can Benefit from This Toolkit",
       description:
-        "See how developers can test ideas, build experiments, and improve productivity using the toolkit environment.",
-      content: `# Faster Experimentation with Jupyter Toolkit
+        "This toolkit is designed for learners and developers who want a faster, easier, and less frustrating notebook setup experience.",
+      content: `# How Students and Developers Can Benefit from This Toolkit
 
-## Rapid Prototyping
-The interactive environment is perfect for:
-- Testing API integrations
-- Validating algorithms
-- Exploring new libraries
-- Debugging complex logic
+## Target Users
+Our project is mainly designed for:
+- Students learning AI and machine learning
+- Developers using TensorFlow
+- People who work with Jupyter Notebook regularly
 
-## Experiment Tracking
-Use the built-in experiment tracker:
-\`\`\`python
-from jupyter_toolkit import experiment
+## Common Challenges
+These users often face:
+- long setup time
+- installation issues
+- dependency conflicts
+- repeated manual tasks
 
-with experiment.track("sentiment_analysis_v1"):
-    # Your experimental code
-    model = train_model(data)
-    accuracy = evaluate(model)
-    experiment.log_metric("accuracy", accuracy)
-\`\`\`
+## How the Toolkit Helps
+### Faster Start
+Users can move from setup to real work more quickly.
 
-## A/B Testing Framework
-Compare different approaches side-by-side:
-\`\`\`python
-results = toolkit.compare(
-    methods=["method_a", "method_b"],
-    dataset=test_data,
-    metrics=["accuracy", "f1", "runtime"]
-)
-results.plot_comparison()
-\`\`\`
+### Reduced Frustration
+A prepared environment means fewer installation problems.
 
-## Integration with Popular Tools
-- **MLflow**: Track experiments across sessions
-- **DVC**: Version control for datasets
-- **Weights & Biases**: Advanced visualization
-- **TensorBoard**: Monitor training in real-time
+### Better Workflow
+Notebook launch and GitHub-related automation make the working process smoother.
 
-## Debugging Techniques
-Use the enhanced debugger:
-\`\`\`python
-# Set conditional breakpoint
-debug.break_if(lambda x: x is None, variable)
+### More Time for Learning and Building
+Instead of fixing setup problems, users can focus on notebooks, data, models, and experiments.
 
-# Watch expressions
-debug.watch("len(dataframe)", "model.score(X_test, y_test)")
+## Why This Is Valuable
+When tools are easier to start and use, more people can learn effectively and work productively.
 
-# Post-mortem debugging
-debug.on_error()
-\`\`\`
-
-## Performance Testing
-Quickly benchmark different implementations:
-\`\`\`python
-results = benchmark.compare(
-    implementations=[implementations.numpy, implementations.pandas],
-    input_sizes=[1000, 10000, 100000],
-    iterations=10
-)
-results.show_summary()
-\`\`\`
-
-## Collaboration Features
-- Share experiment results via URL
-- Comment on specific cells
-- @mention team members
-- Create experiment templates
-
-## Export Options
-Convert experiments to production code:
-\`\`\`bash
-jupyter-toolkit export experiment.ipynb --format python --output production.py
-\`\`\``,
+## Conclusion
+This toolkit aims to make technical workflows simpler, especially for people who want to focus on machine learning and notebook-based development without unnecessary setup difficulty.`,
       author: "Admin Team",
-      date: "April 16, 2026",
+      date: "April 23, 2026",
       readTime: "4 min read",
     },
   ];
 
   const featuredPost = posts.find((post) => post.featured);
   const regularPosts = posts.filter((post) => !post.featured);
-  
-  // First two posts get the horizontal card layout
+
   const topTwoPosts = regularPosts.slice(0, 2);
-  // Remaining posts get the compact grid layout
   const remainingPosts = regularPosts.slice(2);
 
   const openModal = (post: BlogPost) => {
     setSelectedPost(post);
     setIsModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    document.body.style.overflow = 'unset';
-    // Small delay before clearing selected post to maintain smooth animation
+    document.body.style.overflow = "unset";
     setTimeout(() => setSelectedPost(null), 300);
   };
 
-  // Helper function to format content with basic markdown-like styling
   const formatContent = (content: string) => {
-    return content.split('\n').map((line, index) => {
-      // Headers
-      if (line.startsWith('# ')) {
+    return content.split("\n").map((line, index) => {
+      if (line.startsWith("# ")) {
         return <h1 key={index} className="modal-content-h1">{line.slice(2)}</h1>;
       }
-      if (line.startsWith('## ')) {
+      if (line.startsWith("## ")) {
         return <h2 key={index} className="modal-content-h2">{line.slice(3)}</h2>;
       }
-      if (line.startsWith('### ')) {
+      if (line.startsWith("### ")) {
         return <h3 key={index} className="modal-content-h3">{line.slice(4)}</h3>;
       }
-      
-      // Code blocks
-      if (line.startsWith('```')) {
+
+      if (line.startsWith("```")) {
         return <div key={index} className="modal-code-block-start"></div>;
       }
-      
-      // Lists
-      if (line.startsWith('- ')) {
+
+      if (line.startsWith("- ")) {
         return <li key={index} className="modal-list-item">{line.slice(2)}</li>;
       }
       if (line.match(/^\d+\./)) {
-        return <li key={index} className="modal-list-item">{line.replace(/^\d+\.\s/, '')}</li>;
+        return (
+          <li key={index} className="modal-list-item">
+            {line.replace(/^\d+\.\s/, "")}
+          </li>
+        );
       }
-      
-      // Tables (simplified)
-      if (line.includes('|')) {
+
+      if (line.includes("|")) {
         return <div key={index} className="modal-table-row">{line}</div>;
       }
-      
-      // Empty lines
-      if (line.trim() === '') {
+
+      if (line.trim() === "") {
         return <br key={index} />;
       }
-      
-      // Regular paragraphs
+
       return <p key={index} className="modal-paragraph">{line}</p>;
     });
   };
@@ -506,19 +337,17 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
   return (
     <>
       <section className="blogs-page">
-        {/* Hero Section */}
         <div className="blogs-hero">
           <div className="blogs-hero-content">
-            <span className="blogs-eyebrow">Insights & Stories</span>
-            <h1>Explore ideas, guides, and product updates that move your workflow forward</h1>
+            <span className="blogs-eyebrow">Insights and Guides</span>
+            <h1>Explore ideas, workflow tips, and project updates</h1>
             <p>
-              Discover practical tutorials, release updates, workflow ideas, and
-              expert guidance to help you get more value from Jupyter Notebook Toolkit.
+              Read practical articles about Jupyter Notebook setup, Docker
+              environments, workflow automation, and the goals behind this project.
             </p>
           </div>
         </div>
 
-        {/* Featured Section */}
         {featuredPost && (
           <section className="featured-section">
             <div className="featured-blog">
@@ -535,7 +364,7 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
                   <span>{featuredPost.readTime}</span>
                 </div>
 
-                <button 
+                <button
                   className="featured-btn"
                   onClick={() => openModal(featuredPost)}
                 >
@@ -546,11 +375,11 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
               <div className="featured-blog-right">
                 <div className="featured-visual-glow"></div>
                 <div className="featured-visual-card">
-                  <div className="featured-mini-badge">Editor's Pick</div>
-                  <h3>Modern setup, smoother workflow</h3>
+                  <div className="featured-mini-badge">Featured Article</div>
+                  <h3>Simpler setup, better workflow</h3>
                   <p>
-                    A polished starting point for users who want to install and start
-                    using the toolkit with confidence.
+                    Learn why notebook setup becomes difficult and how this project
+                    aims to reduce complexity for users.
                   </p>
                 </div>
               </div>
@@ -558,18 +387,16 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
           </section>
         )}
 
-        {/* Latest Articles Section */}
         <section className="blogs-section">
           <div className="blogs-section-header">
             <div className="blogs-section-header-left">
               <h2>Latest Articles</h2>
-              <p>Fresh guides, updates, and practical ideas for everyday users</p>
+              <p>Practical reading for users who want a simpler notebook workflow</p>
             </div>
             <a href="#" className="view-all-link">View all articles →</a>
           </div>
 
           <div className="articles-grid">
-            {/* Top 2 Articles - Horizontal Cards */}
             <div className="articles-row-two">
               {topTwoPosts.map((post, index) => (
                 <article key={post.id} className="article-card-horizontal">
@@ -580,7 +407,7 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
                     <span className="card-category">{post.category}</span>
                     <h3>{post.title}</h3>
                     <p className="card-description">{post.description}</p>
-                    
+
                     <div className="card-meta">
                       <span>{post.author}</span>
                       <span>•</span>
@@ -588,8 +415,8 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
                       <span>•</span>
                       <span>{post.readTime}</span>
                     </div>
-                    
-                    <button 
+
+                    <button
                       className="card-btn"
                       onClick={() => openModal(post)}
                     >
@@ -600,7 +427,6 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
               ))}
             </div>
 
-            {/* Remaining Articles - 3 Column Compact Grid */}
             <div className="articles-grid-three">
               {remainingPosts.map((post, index) => (
                 <article key={post.id} className="article-card-compact">
@@ -611,14 +437,14 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
                     <span className="card-category">{post.category}</span>
                     <h3>{post.title}</h3>
                     <p className="card-description">{post.description}</p>
-                    
+
                     <div className="card-meta">
                       <span>{post.author}</span>
                       <span>•</span>
                       <span>{post.date}</span>
                     </div>
-                    
-                    <button 
+
+                    <button
                       className="card-btn"
                       onClick={() => openModal(post)}
                     >
@@ -632,11 +458,9 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
         </section>
       </section>
 
-      {/* Modal Overlay - No Footer Version */}
       {isModalOpen && selectedPost && (
-        <div className={`modal-overlay ${isModalOpen ? 'modal-open' : ''}`} onClick={closeModal}>
+        <div className={`modal-overlay ${isModalOpen ? "modal-open" : ""}`} onClick={closeModal}>
           <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
             <div className="modal-header">
               <div className="modal-header-content">
                 <span className="modal-category">{selectedPost.category}</span>
@@ -650,13 +474,10 @@ jupyter-toolkit export experiment.ipynb --format python --output production.py
                 </div>
               </div>
               <button className="modal-close-btn" onClick={closeModal}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
+                ×
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="modal-body">
               <div className="modal-content">
                 {formatContent(selectedPost.content || selectedPost.description)}
