@@ -48,7 +48,7 @@ function GetPaginatedUsers() {
   });
 
   const fetchUsers = useCallback(
-    async (page = pageNumber) => {
+    async (page: number) => {
       try {
         setLoading(true);
         setError("");
@@ -74,11 +74,15 @@ function GetPaginatedUsers() {
         setLoading(false);
       }
     },
-    [pageNumber, organization]
+    [organization]
   );
 
   useEffect(() => {
-    fetchUsers(1);
+    const init = async () => {
+      await fetchUsers(1);
+    };
+
+    init();
   }, [fetchUsers]);
 
   const handleEditClick = async (userId: string) => {
