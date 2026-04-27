@@ -25,6 +25,7 @@ type DownloadItem = {
 
 type ApiResponse = {
   message?: string;
+  downloadUrl?: string;
   data?: {
     downloadUrl?: string;
   };
@@ -34,9 +35,13 @@ const TOKEN_EXPIRY_BUFFER_MS = 60000;
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
 
-const AlertMessage = ({ message, messageType, onClose }: { 
-  message: string; 
-  messageType: "error" | "success"; 
+const AlertMessage = ({
+  message,
+  messageType,
+  onClose,
+}: {
+  message: string;
+  messageType: "error" | "success";
   onClose: () => void;
 }) => {
   if (!message) return null;
@@ -94,7 +99,7 @@ function Downloads() {
       btnClass: "windows",
       platform: "windows",
       versions: [
-        { label: "Windows v1.1", fileName: "Presentation.txt" },
+        { label: "Windows v1.1", fileName: "v1.0.1" },
         { label: "Windows v1.2", fileName: "Presentation.txt" },
         { label: "Windows v1.3", fileName: "Presentation.txt" },
       ],
@@ -173,7 +178,14 @@ function Downloads() {
   };
 
   const sanitizeFileName = (fileName: string): string => {
-    return fileName.replace(/\.\./g, "").replace(/[/\\]/g, "");
+    return fileName
+      .replace(/\.\./g, "")
+      .replace(/[/\\]/g, "");
+  };
+
+  // Fix double slashes in URL path while preserving https://
+  const normalizeUrl = (url: string): string => {
+    return url.replace(/([^:])\/\/+/g, "$1/");
   };
 
   const isValidEmail = (email: string): boolean => {
@@ -201,7 +213,11 @@ function Downloads() {
     return true;
   };
 
-  const fetchWithRetry = async (url: string, options: RequestInit, retryCount = 0): Promise<Response> => {
+  const fetchWithRetry = async (
+    url: string,
+    options: RequestInit,
+    retryCount = 0
+  ): Promise<Response> => {
     try {
       const controller = new AbortController();
       abortControllerRef.current = controller;
@@ -262,16 +278,13 @@ function Downloads() {
         headers.Authorization = `Bearer ${token}`;
       }
 
-      const response = await fetchWithRetry(
-        `${API_BASE_URL}/api/FileDownload/link/${encodeURIComponent(
-          sanitizedFileName
-        )}?expiryMinutes=5`,
-        {
-          method: "GET",
-          headers,
-          cache: "no-store",
-        }
-      );
+      const downloadEndpoint = `${API_BASE_URL}/api/FileDownload/link/${sanitizedFileName}?expiryMinutes=5`;
+
+      const response = await fetchWithRetry(downloadEndpoint, {
+        method: "GET",
+        headers,
+        cache: "no-store",
+      });
 
       let result: ApiResponse | null = null;
       const contentType = response.headers.get("content-type");
@@ -292,24 +305,31 @@ function Downloads() {
 
       if (!response.ok) {
         throw new Error(
-          result?.message || `Failed to generate download link (${response.status}).`
+          result?.message ||
+            `Failed to generate download link (${response.status}).`
         );
       }
 
-      const downloadUrl = result?.data?.downloadUrl;
+      // Handle both flat and nested downloadUrl shapes
+      const rawDownloadUrl = result?.downloadUrl ?? result?.data?.downloadUrl;
 
-      if (!downloadUrl) {
+      if (!rawDownloadUrl) {
         throw new Error("Download URL was not returned by the server.");
       }
 
-      try {
-        const url = new URL(downloadUrl);
+      // Fix any double slashes in the path (e.g. /download//v1.0.1/)
+      const downloadUrl = normalizeUrl(rawDownloadUrl);
 
-        if (import.meta.env.PROD && url.protocol !== "https:") {
-          throw new Error("Insecure download URL detected");
-        }
+      // Validate the cleaned URL
+      let parsedUrl: URL;
+      try {
+        parsedUrl = new URL(downloadUrl);
       } catch {
-        throw new Error("Invalid download URL received");
+        throw new Error("Invalid download URL received from server.");
+      }
+
+      if (import.meta.env.PROD && parsedUrl.protocol !== "https:") {
+        throw new Error("Insecure download URL detected. Please contact support.");
       }
 
       window.open(downloadUrl, "_blank", "noopener,noreferrer");
@@ -321,7 +341,9 @@ function Downloads() {
       setMessageType("error");
 
       const errorMessage =
-        err instanceof Error ? err.message : "Download failed. Please try again.";
+        err instanceof Error
+          ? err.message
+          : "Download failed. Please try again.";
 
       if (errorMessage.includes("Failed to fetch")) {
         setMessage("Network error. Please check your connection and try again.");
@@ -470,10 +492,18 @@ function Downloads() {
         </p>
       </div>
 
-      <AlertMessage message={message} messageType={messageType} onClose={() => setMessage("")} />
+      <AlertMessage
+        message={message}
+        messageType={messageType}
+        onClose={() => setMessage("")}
+      />
 
       {isLoading && (
-        <div className="global-loading-overlay" role="status" aria-label="Loading">
+        <div
+          className="global-loading-overlay"
+          role="status"
+          aria-label="Loading"
+        >
           <div className="loading-spinner"></div>
           <p className="loading-text">Processing...</p>
         </div>
