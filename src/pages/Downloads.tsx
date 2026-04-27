@@ -24,7 +24,7 @@ type DownloadItem = {
 };
 
 type ApiResponse = {
-  message?: string;
+  message?: boolean | string; // Handle both string and boolean
   downloadUrl?: string;
   data?: {
     downloadUrl?: string;
@@ -227,6 +227,11 @@ function Downloads() {
         signal: controller.signal,
       });
 
+      // Don't retry 404 responses
+      if (response.status === 404) {
+        return response;
+      }
+
       if (response.status >= 500 && retryCount < MAX_RETRY_ATTEMPTS) {
         await new Promise((resolve) =>
           setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
@@ -305,7 +310,7 @@ function Downloads() {
 
       if (!response.ok) {
         throw new Error(
-          result?.message ||
+          result?.message?.toString() ||
             `Failed to generate download link (${response.status}).`
         );
       }
@@ -404,7 +409,7 @@ function Downloads() {
       }
 
       const response = await fetchWithRetry(
-        `${API_BASE_URL}/api/Users/email/${encodeURIComponent(email)}`,
+        `${API_BASE_URL}/checkUser/${encodeURIComponent(email)}`,
         {
           method: "GET",
           headers,
@@ -412,43 +417,68 @@ function Downloads() {
         }
       );
 
+      console.log("Response status:", response.status);
+
       let data: ApiResponse | null = null;
       const contentType = response.headers.get("content-type");
 
       if (contentType?.includes("application/json")) {
         try {
           const text = await response.text();
+          console.log("Raw response text:", text);
           data = text ? (JSON.parse(text) as ApiResponse) : null;
         } catch {
           data = null;
         }
       }
 
-      if (response.status === 404) {
-        setShowEmailCheckForm(false);
-        setShowForm(true);
-        return;
-      }
+      console.log("Parsed data:", data);
 
       if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("auth");
         throw new Error("Your session has expired. Please log in again.");
       }
 
+      // ✅ FIXED: Handle 404 as "user not found"
+      if (response.status === 404) {
+        console.log("User not found (404), showing registration form");
+        setShowEmailCheckForm(false);
+        setShowForm(true);
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(
-          data?.message || `Failed to check email (${response.status}).`
+          `Failed to check email (${response.status}).`
         );
       }
 
-      setShowEmailCheckForm(false);
-      setMessageType("success");
-      setMessage("Welcome back! Your download is starting...");
+      // Handle both string and boolean responses for 200 OK
+      const userExists = data?.message === true || data?.message === "true";
+      const userNotFound = data?.message === false || data?.message === "false";
 
-      if (pendingFileName) {
-        await startDownload(pendingFileName);
-        setPendingFileName(null);
+      if (userNotFound) {
+        console.log("User not found (false message), showing registration form");
+        setShowEmailCheckForm(false);
+        setShowForm(true);
+        return;
       }
+
+      if (userExists) {
+        console.log("User found, starting download");
+        setShowEmailCheckForm(false);
+        setMessageType("success");
+        setMessage("Welcome back! Your download is starting...");
+
+        if (pendingFileName) {
+          await startDownload(pendingFileName);
+          setPendingFileName(null);
+        }
+        return;
+      }
+
+      // fallback
+      throw new Error(`Unexpected server response: ${JSON.stringify(data)}`);
     } catch (err: unknown) {
       setMessageType("error");
 
