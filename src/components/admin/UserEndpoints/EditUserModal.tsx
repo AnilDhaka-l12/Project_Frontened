@@ -23,8 +23,11 @@ function EditUserModal({ isOpen, user, onClose, onSave }: Props) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setFormData(user);
-  }, [user]);
+    if (isOpen && user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData(user);
+    }
+  }, [isOpen, user]);
 
   if (!isOpen || !formData) return null;
 

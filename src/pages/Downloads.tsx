@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import UserForm from "../components/Form/Form";
 import EmailCheckForm from "../components/Form/EmailCheckForm";
 import "../styles/Downloads.css";
@@ -33,6 +33,34 @@ type ApiResponse = {
 const TOKEN_EXPIRY_BUFFER_MS = 60000;
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
+
+const AlertMessage = ({ message, messageType, onClose }: { 
+  message: string; 
+  messageType: "error" | "success"; 
+  onClose: () => void;
+}) => {
+  if (!message) return null;
+
+  return (
+    <div
+      role="alert"
+      aria-live="polite"
+      className={`alert-message ${messageType}`}
+    >
+      <span className="alert-icon" aria-hidden="true">
+        {messageType === "error" ? "⚠" : "✓"}
+      </span>
+      <span className="alert-text">{message}</span>
+      <button
+        onClick={onClose}
+        className="alert-close-btn"
+        aria-label="Close alert"
+      >
+        ×
+      </button>
+    </div>
+  );
+};
 
 function Downloads() {
   const [message, setMessage] = useState("");
@@ -120,7 +148,7 @@ function Downloads() {
     };
   }, [showVersionModal, showEmailCheckForm, showForm]);
 
-  const getToken = useCallback((): string | null => {
+  const getToken = (): string | null => {
     try {
       const authData = localStorage.getItem("auth");
       if (!authData) return null;
@@ -142,7 +170,7 @@ function Downloads() {
     } catch {
       return null;
     }
-  }, []);
+  };
 
   const sanitizeFileName = (fileName: string): string => {
     return fileName.replace(/\.\./g, "").replace(/[/\\]/g, "");
@@ -173,42 +201,39 @@ function Downloads() {
     return true;
   };
 
-  const fetchWithRetry = useCallback(
-    async (url: string, options: RequestInit, retryCount = 0): Promise<Response> => {
-      try {
-        const controller = new AbortController();
-        abortControllerRef.current = controller;
+  const fetchWithRetry = async (url: string, options: RequestInit, retryCount = 0): Promise<Response> => {
+    try {
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
 
-        const response = await fetch(url, {
-          ...options,
-          signal: controller.signal,
-        });
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
 
-        if (response.status >= 500 && retryCount < MAX_RETRY_ATTEMPTS) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
-          );
-          return fetchWithRetry(url, options, retryCount + 1);
-        }
-
-        return response;
-      } catch (error) {
-        if (error instanceof Error && error.name === "AbortError") {
-          throw new Error("Request was cancelled");
-        }
-
-        if (retryCount < MAX_RETRY_ATTEMPTS) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
-          );
-          return fetchWithRetry(url, options, retryCount + 1);
-        }
-
-        throw error;
+      if (response.status >= 500 && retryCount < MAX_RETRY_ATTEMPTS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
+        );
+        return fetchWithRetry(url, options, retryCount + 1);
       }
-    },
-    []
-  );
+
+      return response;
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new Error("Request was cancelled");
+      }
+
+      if (retryCount < MAX_RETRY_ATTEMPTS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
+        );
+        return fetchWithRetry(url, options, retryCount + 1);
+      }
+
+      throw error;
+    }
+  };
 
   const startDownload = async (fileName: string) => {
     setMessage("");
@@ -434,57 +459,6 @@ function Downloads() {
     }
   };
 
-  const AlertMessage = () => {
-    if (!message) return null;
-
-    return (
-      <div
-        role="alert"
-        aria-live="polite"
-        className={`alert-message ${messageType}`}
-        style={{
-          maxWidth: "600px",
-          margin: "0 auto 24px",
-          padding: "16px 20px",
-          borderRadius: "16px",
-          background:
-            messageType === "error"
-              ? "linear-gradient(135deg, #fee2e2, #fecaca)"
-              : "linear-gradient(135deg, #dcfce7, #bbf7d0)",
-          border:
-            messageType === "error"
-              ? "1px solid #fca5a5"
-              : "1px solid #86efac",
-          color: messageType === "error" ? "#991b1b" : "#166534",
-          textAlign: "center",
-          fontWeight: 500,
-          animation: "slideDown 0.3s ease",
-        }}
-      >
-        <span style={{ marginRight: "8px" }}>
-          {messageType === "error" ? "⚠" : "✓"}
-        </span>
-        {message}
-        <button
-          onClick={() => setMessage("")}
-          aria-label="Close alert"
-          style={{
-            marginLeft: "12px",
-            background: "transparent",
-            border: "none",
-            fontSize: "20px",
-            cursor: "pointer",
-            color: "inherit",
-            opacity: 0.7,
-            float: "right",
-          }}
-        >
-          ×
-        </button>
-      </div>
-    );
-  };
-
   return (
     <section className="downloads-page">
       <div className="downloads-hero">
@@ -496,7 +470,7 @@ function Downloads() {
         </p>
       </div>
 
-      <AlertMessage />
+      <AlertMessage message={message} messageType={messageType} onClose={() => setMessage("")} />
 
       {isLoading && (
         <div className="global-loading-overlay" role="status" aria-label="Loading">
