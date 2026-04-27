@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import UserForm from "../components/Form/Form";
 import EmailCheckForm from "../components/Form/EmailCheckForm";
 import "../styles/Downloads.css";
@@ -23,93 +23,276 @@ type DownloadItem = {
   versions: VersionItem[];
 };
 
+type ApiResponse = {
+  message?: string;
+  data?: {
+    downloadUrl?: string;
+  };
+};
+
+const TOKEN_EXPIRY_BUFFER_MS = 60000;
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 1000;
+
+const AlertMessage = ({ message, messageType, onClose }: { 
+  message: string; 
+  messageType: "error" | "success"; 
+  onClose: () => void;
+}) => {
+  if (!message) return null;
+
+  return (
+    <div
+      role="alert"
+      aria-live="polite"
+      className={`alert-message ${messageType}`}
+    >
+      <span className="alert-icon" aria-hidden="true">
+        {messageType === "error" ? "⚠" : "✓"}
+      </span>
+      <span className="alert-text">{message}</span>
+      <button
+        onClick={onClose}
+        className="alert-close-btn"
+        aria-label="Close alert"
+      >
+        ×
+      </button>
+    </div>
+  );
+};
+
 function Downloads() {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"error" | "success">("error");
   const [showEmailCheckForm, setShowEmailCheckForm] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showVersionModal, setShowVersionModal] = useState(false);
-  const [selectedDownload, setSelectedDownload] = useState<DownloadItem | null>(
-    null
-  );
+  const [selectedDownload, setSelectedDownload] = useState<DownloadItem | null>(null);
   const [pendingFileName, setPendingFileName] = useState<string | null>(null);
   const [prefillEmail, setPrefillEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [downloadAttempts, setDownloadAttempts] = useState(0);
+  const [lastAttemptTime, setLastAttemptTime] = useState(0);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const downloads: DownloadItem[] = [
     {
-      title: "Installer Images",
+      title: "Windows Version",
       badge: "Recommended",
       descriptionTop: [
-        "Direct access to hardware",
-        "Customized kernel support",
-        "No virtualization overhead",
+        "Easy setup for notebook users",
+        "Supports Docker-based workflow",
+        "Quick start for machine learning work",
       ],
       descriptionBottom:
-        "Best choice for full performance and direct access to system hardware.",
+        "A simple option for Windows users who want an easier Jupyter Notebook setup.",
       buttonText: "Download for Windows",
-      icon: "🖥️",
+      icon: "🪟",
       cardClass: "installer-card",
       btnClass: "windows",
       platform: "windows",
       versions: [
-        { label: "Windows v1.1", fileName: "video.mov" },
-        { label: "Windows v1.2", fileName: "video.mov" },
-        { label: "Windows v1.3", fileName: "video.mov" },
+        { label: "Windows v1.1", fileName: "Presentation.txt" },
+        { label: "Windows v1.2", fileName: "Presentation.txt" },
+        { label: "Windows v1.3", fileName: "Presentation.txt" },
       ],
     },
     {
-      title: "Virtual Machines",
-      badge: "Flexible Setup",
+      title: "Linux Version",
+      badge: "Flexible",
       descriptionTop: [
-        "Snapshots functionality",
-        "Isolated environment",
-        "Quick installation workflow",
+        "Reliable environment setup",
+        "Good for testing and development",
+        "Supports notebook workflow needs",
       ],
       descriptionBottom:
-        "Ideal for testing, learning, and running the toolkit without changing your main system.",
+        "A flexible option for Linux users who want a smoother notebook workflow.",
       buttonText: "Download for Linux",
-      icon: "📦",
+      icon: "🐧",
       cardClass: "vm-card",
       btnClass: "linux",
       platform: "linux",
       versions: [
-        { label: "Linux v1.1", fileName: "video.mov" },
-        { label: "Linux v1.2", fileName: "video.mov" },
-        { label: "Linux v1.3", fileName: "video.mov" },
+        { label: "Linux v1.1", fileName: "Presentation.txt" },
+        { label: "Linux v1.2", fileName: "Presentation.txt" },
+        { label: "Linux v1.3", fileName: "Presentation.txt" },
       ],
     },
   ];
 
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (showVersionModal) setShowVersionModal(false);
+        if (showEmailCheckForm) setShowEmailCheckForm(false);
+        if (showForm) setShowForm(false);
+      }
+    };
+
+    if (showVersionModal || showEmailCheckForm || showForm) {
+      window.addEventListener("keydown", handleEsc);
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "unset";
+    };
+  }, [showVersionModal, showEmailCheckForm, showForm]);
+
+  const getToken = (): string | null => {
+    try {
+      const authData = localStorage.getItem("auth");
+      if (!authData) return null;
+
+      const parsedAuth = JSON.parse(authData);
+      const token = parsedAuth?.token;
+
+      if (token && typeof token === "string" && token.split(".").length === 3) {
+        if (parsedAuth?.expiresAt) {
+          const expiresAt = new Date(parsedAuth.expiresAt).getTime();
+          if (Date.now() >= expiresAt - TOKEN_EXPIRY_BUFFER_MS) {
+            return null;
+          }
+        }
+        return token;
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
+  };
+
+  const sanitizeFileName = (fileName: string): string => {
+    return fileName.replace(/\.\./g, "").replace(/[/\\]/g, "");
+  };
+
+  const isValidEmail = (email: string): boolean => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const checkRateLimit = (): boolean => {
+    const now = Date.now();
+    const timeSinceLastAttempt = now - lastAttemptTime;
+
+    if (timeSinceLastAttempt > 60000) {
+      setDownloadAttempts(1);
+      setLastAttemptTime(now);
+      return true;
+    }
+
+    if (downloadAttempts >= 5) {
+      setMessageType("error");
+      setMessage("Too many download attempts. Please wait a moment and try again.");
+      return false;
+    }
+
+    setDownloadAttempts((prev) => prev + 1);
+    setLastAttemptTime(now);
+    return true;
+  };
+
+  const fetchWithRetry = async (url: string, options: RequestInit, retryCount = 0): Promise<Response> => {
+    try {
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+
+      if (response.status >= 500 && retryCount < MAX_RETRY_ATTEMPTS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
+        );
+        return fetchWithRetry(url, options, retryCount + 1);
+      }
+
+      return response;
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        throw new Error("Request was cancelled");
+      }
+
+      if (retryCount < MAX_RETRY_ATTEMPTS) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, RETRY_DELAY_MS * Math.pow(2, retryCount))
+        );
+        return fetchWithRetry(url, options, retryCount + 1);
+      }
+
+      throw error;
+    }
+  };
+
   const startDownload = async (fileName: string) => {
     setMessage("");
 
+    if (!checkRateLimit()) return;
+
+    const sanitizedFileName = sanitizeFileName(fileName);
+
     if (!API_BASE_URL) {
       setMessageType("error");
-      setMessage("API base URL is missing. Check your .env file.");
+      setMessage("System configuration error. Please contact support.");
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/FileDownload/link/${fileName}?expiryMinutes=5`,
+      const token = getToken();
+
+      const headers: HeadersInit = {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const response = await fetchWithRetry(
+        `${API_BASE_URL}/api/FileDownload/link/${encodeURIComponent(
+          sanitizedFileName
+        )}?expiryMinutes=5`,
         {
           method: "GET",
+          headers,
+          cache: "no-store",
         }
       );
 
-      let result: any = null;
+      let result: ApiResponse | null = null;
+      const contentType = response.headers.get("content-type");
 
-      try {
-        const text = await response.text();
-        result = text ? JSON.parse(text) : null;
-      } catch {
-        result = null;
+      if (contentType?.includes("application/json")) {
+        try {
+          const text = await response.text();
+          result = text ? (JSON.parse(text) as ApiResponse) : null;
+        } catch {
+          result = null;
+        }
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("auth");
+        throw new Error("Your session has expired. Please log in again.");
       }
 
       if (!response.ok) {
         throw new Error(
-          result?.message ||
-            `Failed to generate download link (${response.status}).`
+          result?.message || `Failed to generate download link (${response.status}).`
         );
       }
 
@@ -119,10 +302,42 @@ function Downloads() {
         throw new Error("Download URL was not returned by the server.");
       }
 
-      window.open(downloadUrl, "_blank");
-    } catch (err: any) {
+      try {
+        const url = new URL(downloadUrl);
+
+        if (import.meta.env.PROD && url.protocol !== "https:") {
+          throw new Error("Insecure download URL detected");
+        }
+      } catch {
+        throw new Error("Invalid download URL received");
+      }
+
+      window.open(downloadUrl, "_blank", "noopener,noreferrer");
+
+      setMessageType("success");
+      setMessage("Download started successfully!");
+      setDownloadAttempts(0);
+    } catch (err: unknown) {
       setMessageType("error");
-      setMessage(err.message || "Download failed.");
+
+      const errorMessage =
+        err instanceof Error ? err.message : "Download failed. Please try again.";
+
+      if (errorMessage.includes("Failed to fetch")) {
+        setMessage("Network error. Please check your connection and try again.");
+      } else if (
+        errorMessage.includes("Authentication") ||
+        errorMessage.includes("session has expired")
+      ) {
+        setMessage("Please log in to continue.");
+      } else {
+        setMessage(errorMessage);
+      }
+
+      console.error("Download error:", err);
+    } finally {
+      setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -139,55 +354,104 @@ function Downloads() {
   };
 
   const handleEmailCheck = async (email: string) => {
-    if (!API_BASE_URL) {
-      throw new Error("API base URL is missing. Check your .env file.");
-    }
-
-    setPrefillEmail(email);
-
-    const response = await fetch(
-      `${API_BASE_URL}/api/Users/email/${encodeURIComponent(email)}`,
-      {
-        method: "GET",
-      }
-    );
-
-    let data: any = null;
-
-    try {
-      const text = await response.text();
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      data = null;
-    }
-
-    if (response.status === 404) {
-      setShowEmailCheckForm(false);
-      setShowForm(true);
+    if (!isValidEmail(email)) {
+      setMessageType("error");
+      setMessage("Please enter a valid email address.");
       return;
     }
 
-    if (!response.ok) {
-      throw new Error(
-        data?.message || `Failed to check email (${response.status}).`
-      );
+    if (!API_BASE_URL) {
+      setMessageType("error");
+      setMessage("API base URL is missing. Check your .env file.");
+      return;
     }
 
-    // 200 OK means user exists
-    setShowEmailCheckForm(false);
-    setMessageType("success");
-    setMessage("User found. Your download is starting...");
+    setPrefillEmail(email);
+    setIsLoading(true);
 
-    if (pendingFileName) {
-      await startDownload(pendingFileName);
-      setPendingFileName(null);
+    try {
+      const token = getToken();
+
+      const headers: HeadersInit = {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const response = await fetchWithRetry(
+        `${API_BASE_URL}/api/Users/email/${encodeURIComponent(email)}`,
+        {
+          method: "GET",
+          headers,
+          cache: "no-store",
+        }
+      );
+
+      let data: ApiResponse | null = null;
+      const contentType = response.headers.get("content-type");
+
+      if (contentType?.includes("application/json")) {
+        try {
+          const text = await response.text();
+          data = text ? (JSON.parse(text) as ApiResponse) : null;
+        } catch {
+          data = null;
+        }
+      }
+
+      if (response.status === 404) {
+        setShowEmailCheckForm(false);
+        setShowForm(true);
+        return;
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("auth");
+        throw new Error("Your session has expired. Please log in again.");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data?.message || `Failed to check email (${response.status}).`
+        );
+      }
+
+      setShowEmailCheckForm(false);
+      setMessageType("success");
+      setMessage("Welcome back! Your download is starting...");
+
+      if (pendingFileName) {
+        await startDownload(pendingFileName);
+        setPendingFileName(null);
+      }
+    } catch (err: unknown) {
+      setMessageType("error");
+
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to verify email.";
+
+      if (errorMessage.includes("Failed to fetch")) {
+        setMessage("Network error. Please check your connection.");
+      } else if (errorMessage.includes("session has expired")) {
+        setMessage("Please log in to continue.");
+      } else {
+        setMessage(errorMessage);
+      }
+
+      console.error("Email check error:", err);
+    } finally {
+      setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
   const handleFormSuccess = async () => {
     setShowForm(false);
     setMessageType("success");
-    setMessage("Form submitted successfully. Your download is starting...");
+    setMessage("Thank you for registering! Your download is starting...");
 
     if (pendingFileName) {
       await startDownload(pendingFileName);
@@ -206,17 +470,13 @@ function Downloads() {
         </p>
       </div>
 
-      {message && (
-        <p
-          style={{
-            color: messageType === "error" ? "red" : "green",
-            textAlign: "center",
-            marginBottom: "20px",
-            fontWeight: 600,
-          }}
-        >
-          {message}
-        </p>
+      <AlertMessage message={message} messageType={messageType} onClose={() => setMessage("")} />
+
+      {isLoading && (
+        <div className="global-loading-overlay" role="status" aria-label="Loading">
+          <div className="loading-spinner"></div>
+          <p className="loading-text">Processing...</p>
+        </div>
       )}
 
       <div className="downloads-grid">
@@ -224,7 +484,9 @@ function Downloads() {
           <article key={item.title} className={`premium-card ${item.cardClass}`}>
             <div className="premium-card-top">
               <div className="premium-icon-wrap">
-                <div className="premium-icon">{item.icon}</div>
+                <div className="premium-icon" aria-hidden="true">
+                  {item.icon}
+                </div>
               </div>
 
               <div className="premium-content">
@@ -245,8 +507,12 @@ function Downloads() {
               <button
                 onClick={() => handleDownloadClick(item)}
                 className={`premium-download-btn ${item.btnClass}`}
+                disabled={isLoading}
+                aria-label={`Download ${item.title} for ${item.platform}`}
               >
-                <span className="btn-icon">↓</span>
+                <span className="btn-icon" aria-hidden="true">
+                  ↓
+                </span>
                 {item.buttonText}
               </button>
             </div>
@@ -255,18 +521,27 @@ function Downloads() {
       </div>
 
       {showVersionModal && selectedDownload && (
-        <div className="version-modal-overlay">
-          <div className="version-modal">
+        <div
+          className="version-modal-overlay"
+          onClick={() => setShowVersionModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="version-modal-title"
+        >
+          <div className="version-modal" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
               className="version-modal-close"
               onClick={() => setShowVersionModal(false)}
+              aria-label="Close version selection"
             >
               ×
             </button>
 
             <div className="version-modal-header">
-              <h2>Select {selectedDownload.platform} version</h2>
+              <h2 id="version-modal-title">
+                Select {selectedDownload.platform} version
+              </h2>
               <p>Choose the version you want to download.</p>
             </div>
 
@@ -277,7 +552,10 @@ function Downloads() {
                   className="version-item-btn"
                   onClick={() => handleVersionSelect(version.fileName)}
                 >
-                  {version.label}
+                  <span>{version.label}</span>
+                  <span className="version-arrow" aria-hidden="true">
+                    →
+                  </span>
                 </button>
               ))}
             </div>

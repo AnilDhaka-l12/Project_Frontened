@@ -60,7 +60,7 @@ const faqData = [
   {
     question: "How can I contact support?",
     answer:
-      "You can use the Contact form on the website or send an email to support@jupytertoolkit.com.",
+      "You can use the Contact form on the website or send an email to jupytersupport@jupytertoolkit.com.",
   },
 ];
 

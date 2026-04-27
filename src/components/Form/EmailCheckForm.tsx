@@ -32,8 +32,12 @@ function EmailCheckForm({ onClose, onSubmitEmail }: Props) {
       setSubmitting(true);
       setError("");
       await onSubmitEmail(email.trim());
-    } catch (err: any) {
-      setError(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Something went wrong.");
+      } else {
+        setError("Something went wrong.");
+      }
     } finally {
       setSubmitting(false);
     }

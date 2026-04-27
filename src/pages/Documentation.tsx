@@ -20,25 +20,27 @@ function Documentation() {
   return (
     <div className="documentation-page">
       <h1>Documentation</h1>
+
       <p className="doc-intro">
-        Welcome to the Jupyter Notebook Toolkit documentation page. Here you can
-        learn how to install the project, run it on your local machine, and
-        understand the basic usage process.
+        This documentation explains how to install and use the Jupyter Notebook Toolkit.
+        The toolkit simplifies machine learning setup by automatically configuring
+        environments using Docker and launching Jupyter Notebook instantly.
       </p>
 
       <section className="doc-section">
-        <h2>📦 Installation</h2>
+        <h2>Installation</h2>
+
         <p>
-          Follow the steps below to set up the project on your computer. Make
-          sure you have Node.js and npm installed before starting.
+          Follow these steps to set up the toolkit. Make sure Docker is installed
+          on your system before starting.
         </p>
 
         <div className="doc-text-block">
           <h3>1. Clone the repository</h3>
           <p>
-            This command downloads the project files from your Git repository to
-            your local machine.
+            Download the project files from GitHub to your local machine.
           </p>
+
           <div className="code-block">
             <code>git clone https://github.com/your-repo/project.git</code>
             <button onClick={() => handleCopy("git clone https://github.com/your-repo/project.git", 1)}>
@@ -50,9 +52,9 @@ function Documentation() {
         <div className="doc-text-block">
           <h3>2. Open the project folder</h3>
           <p>
-            Move into the project directory so you can run commands inside the
-            correct folder.
+            Navigate into the project directory.
           </p>
+
           <div className="code-block">
             <code>cd project</code>
             <button onClick={() => handleCopy("cd project", 2)}>
@@ -62,27 +64,29 @@ function Documentation() {
         </div>
 
         <div className="doc-text-block">
-          <h3>3. Install dependencies</h3>
+          <h3>3. Run Docker container</h3>
           <p>
-            This installs all packages required for the frontend application to
-            run correctly.
+            This command creates a container with all required dependencies such as
+            CUDA, cuDNN, and TensorFlow.
           </p>
+
           <div className="code-block">
-            <code>npm install</code>
-            <button onClick={() => handleCopy("npm install", 3)}>
+            <code>docker run -p 8888:8888 jupyter-toolkit</code>
+            <button onClick={() => handleCopy("docker run -p 8888:8888 jupyter-toolkit", 3)}>
               {copiedIndex === 3 ? "Copied!" : "Copy"}
             </button>
           </div>
         </div>
 
         <div className="doc-text-block">
-          <h3>4. Start the development server</h3>
+          <h3>4. Open Jupyter Notebook</h3>
           <p>
-            Run this command to start the application in development mode.
+            After starting the container, open the notebook in your browser.
           </p>
+
           <div className="code-block">
-            <code>npm run dev</code>
-            <button onClick={() => handleCopy("npm run dev", 4)}>
+            <code>http://localhost:8888</code>
+            <button onClick={() => handleCopy("http://localhost:8888", 4)}>
               {copiedIndex === 4 ? "Copied!" : "Copy"}
             </button>
           </div>
@@ -90,48 +94,61 @@ function Documentation() {
       </section>
 
       <section className="doc-section">
-        <h2>🚀 Usage</h2>
+        <h2>Usage</h2>
+
         <p>
-          After the server starts, open your browser and visit the local address
-          shown below. This will open the application in your browser.
+          Once the toolkit is running, you can start working with Jupyter Notebook immediately.
         </p>
 
-        <div className="code-block">
-          <code>http://localhost:5173</code>
-          <button onClick={() => handleCopy("http://localhost:5173", 5)}>
-            {copiedIndex === 5 ? "Copied!" : "Copy"}
-          </button>
-        </div>
+        <ul>
+          <li>Open the notebook interface in your browser</li>
+          <li>Create or upload notebooks</li>
+          <li>Run machine learning code with GPU support</li>
+          <li>Your work is saved automatically</li>
+        </ul>
 
         <p>
-          Once the application is open, you can use the navigation bar to move
-          between pages such as Home, Downloads, About Us, and Documentation.
-          This toolkit is designed to help users work with notebook-related
-          tools in a simple and organized way.
+          This removes the need for manual environment setup and reduces configuration errors.
         </p>
       </section>
 
       <section className="doc-section">
-        <h2>⚙️ Requirements</h2>
-        <p>Before running the project, make sure your system has the following:</p>
+        <h2>GitHub Integration</h2>
+
+        <p>
+          The system can automatically track file changes and push updates to GitHub.
+        </p>
+
         <ul>
-          <li>Node.js installed</li>
-          <li>npm package manager</li>
-          <li>A code editor such as VS Code</li>
-          <li>A modern web browser</li>
+          <li>No manual commits required</li>
+          <li>Reduces the risk of losing work</li>
+          <li>Improves workflow efficiency</li>
         </ul>
       </section>
 
       <section className="doc-section">
-        <h2>🛠 Troubleshooting</h2>
-        <p>
-          If the project does not run correctly, check these common issues:
-        </p>
+        <h2>Requirements</h2>
+
+        <p>Before using the toolkit, make sure you have:</p>
+
         <ul>
-          <li>Make sure all dependencies are installed with <code>npm install</code></li>
-          <li>Check that the terminal is opened in the correct project folder</li>
-          <li>Confirm that the correct port is being used</li>
-          <li>Make sure the backend server is also running if your app needs API data</li>
+          <li>Docker installed and running</li>
+          <li>Internet connection</li>
+          <li>A modern web browser</li>
+          <li>Basic knowledge of Jupyter Notebook (recommended)</li>
+        </ul>
+      </section>
+
+      <section className="doc-section">
+        <h2>Troubleshooting</h2>
+
+        <p>If something does not work, try the following:</p>
+
+        <ul>
+          <li>Make sure Docker is installed and running</li>
+          <li>Check if port 8888 is available</li>
+          <li>Restart the container</li>
+          <li>Verify your system supports Docker</li>
         </ul>
       </section>
     </div>

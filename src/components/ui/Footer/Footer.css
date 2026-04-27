@@ -1,39 +1,133 @@
-/* Footer container */
+/* Footer.css - Light Orange Clean Theme */
+
+:root {
+  --orange: #f37726;
+  --orange-light: #fff4ed;   /* very soft orange */
+  --orange-border: #fcd9c6;  /* light border */
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+}
+
+/* Footer */
 .footer {
-  border-top: 1px solid #ddd;
-  background: #fafafa;
-  padding: 25px 20px;
-  text-align: center;
+  background: #ffffff;
+  color: var(--text-dark);
+  padding: 48px 32px 32px;
+  border-top: 2px solid var(--orange-border);
 }
 
-/* Footer title */
-.footer-title {
-  font-weight: 500;
-  margin-bottom: 10px;
+/* Layout */
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
 }
 
-/* Links container */
-.footer-links {
+.footer-section {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 10px;
+  flex-direction: column;
+}
+
+/* Title */
+.footer-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--orange);
+}
+
+/* Copyright */
+.footer-copyright {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Headings */
+.footer-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Links */
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .footer-links a {
-  color: #2c7be5;
+  color: var(--text-light);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  width: fit-content;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+  color: var(--orange);
+  transform: translateX(4px);
 }
 
 /* Email */
 .footer-email {
-  font-size: 14px;
-  color: #555;
+  margin: 0 0 16px;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* Social */
+.footer-social {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.footer-social a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.footer-social a:hover {
+  color: var(--orange);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 24px 24px;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-section {
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0 auto;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
 }

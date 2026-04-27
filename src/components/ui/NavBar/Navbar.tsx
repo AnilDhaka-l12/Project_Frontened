@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import "./Navbar.css";
+import { NavLink } from "react-router-dom";
+import "./NavBar.css";
 
 function Navbar() {
   return (
@@ -10,15 +10,29 @@ function Navbar() {
       </div>
 
       <nav className="global-menu-bar">
-        <Link to="/">Home</Link>
-        <Link to="/">Developer Community</Link>
-        <Link to="/">Blogs</Link>
-        <Link to="/downloads" state={{ openEmailCheck: true }}>
-          Downloads
-        </Link>
-        <Link to="/about">About Us</Link>
-        <Link to="/documentation">Documentation</Link>
+        <NavLink to="/" end>
+          Home
+        </NavLink>
 
+        <NavLink to="/community">
+          Developer Community
+        </NavLink>
+
+        <NavLink to="/blogs">
+          Blogs
+        </NavLink>
+
+        <NavLink to="/downloads" state={{ openEmailCheck: true }}>
+          Downloads
+        </NavLink>
+
+        <NavLink to="/about">
+          About Us
+        </NavLink>
+
+        <NavLink to="/documentation">
+          Documentation
+        </NavLink>
       </nav>
     </header>
   );

@@ -1,125 +1,48 @@
 .user-endpoints-container {
-  margin-top: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 24px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
-.user-endpoints-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2d3d;
+/* Header */
+.user-endpoints-header {
   margin-bottom: 20px;
 }
 
-.endpoint-card {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 14px 18px;
-  border-radius: 10px;
-  margin-bottom: 14px;
-  border: 1px solid transparent;
-}
-
-.endpoint-method {
-  min-width: 95px;
-  text-align: center;
+.user-endpoints-title {
+  margin: 0;
+  font-size: 26px;
   font-weight: 700;
-  font-size: 1rem;
-  color: #ffffff;
-  padding: 10px 0;
-  border-radius: 6px;
+  color: #0f172a;
 }
 
-.endpoint-path {
-  font-family: monospace;
-  font-size: 1.2rem;
-  color: #1f2d3d;
-}
-
-.get-card {
-  background: #eaf3ff;
-  border-color: #60a5fa;
-}
-
-.post-card {
-  background: #eafaf1;
-  border-color: #34d399;
-}
-
-.put-card {
-  background: #fff4e5;
-  border-color: #f59e0b;
-}
-
-.delete-card {
-  background: #fdecec;
-  border-color: #ef4444;
-}
-
-.get-method {
-  background: #60a5fa;
-}
-
-.post-method {
-  background: #34d399;
-}
-
-.put-method {
-  background: #f59e0b;
-}
-
-.delete-method {
-  background: #ef4444;
-}
-
-.endpoint-box {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  margin-bottom: 12px;
-  border: 1px solid #60a5fa;
-  background: #eaf2ff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.endpoint-box:hover {
-  transform: translateY(-1px);
-}
-
-.excel-box {
-  border: 1px solid #22c55e;
-  background: #eafaf1;
-}
-
-.endpoint-method {
-  min-width: 70px;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.endpoint-method.get {
-  background: #60a5fa;
-}
-
-.endpoint-label {
+.user-endpoints-subtitle {
+  margin-top: 6px;
   font-size: 14px;
-  font-weight: 500;
-  color: #1f2937;
+  color: #64748b;
 }
 
-.no-results {
+/* Content wrapper */
+.user-endpoints-content {
   margin-top: 10px;
-  color: #6b7280;
-  font-size: 14px;
+}
+
+/* Empty state */
+.no-results {
+  margin-top: 20px;
+  color: #64748b;
   font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .user-endpoints-container {
+    padding: 16px;
+  }
+
+  .user-endpoints-title {
+    font-size: 22px;
+  }
 }
