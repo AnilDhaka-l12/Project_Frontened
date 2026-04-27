@@ -100,8 +100,8 @@ function Downloads() {
       platform: "windows",
       versions: [
         { label: "Windows v1.1", fileName: "v1.0.1" },
-        { label: "Windows v1.2", fileName: "Presentation.txt" },
-        { label: "Windows v1.3", fileName: "Presentation.txt" },
+        { label: "Windows v1.2(Coming soon)", fileName: "Presentation.txt" },
+        { label: "Windows v1.3(comming soon )", fileName: "Presentation.txt" },
       ],
     },
     {
