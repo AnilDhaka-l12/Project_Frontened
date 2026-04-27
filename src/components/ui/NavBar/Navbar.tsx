@@ -5,7 +5,11 @@ function Navbar() {
   return (
     <header className="global-header">
       <div className="global-header-top">
-        <div className="global-logo-circle">J</div>
+        <img 
+          src="/jtk2.png" 
+          alt="Jupyter Notebook Toolkit Logo" 
+          className="global-logo-image"
+        />
         <h1 className="global-logo-text">Jupyter NoteBook Toolkit</h1>
       </div>
 

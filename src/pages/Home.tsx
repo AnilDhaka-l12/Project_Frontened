@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
 function Home() {
@@ -18,8 +19,12 @@ function Home() {
           </p>
 
           <div className="hero-buttons">
-            <button className="btn-primary">Explore Tools</button>
-            <button className="btn-secondary">Get Started</button>
+            <Link to="/downloads">
+              <button className="btn-primary">Explore Tools</button>
+            </Link>
+            <Link to="/documentation">
+              <button className="btn-secondary">Get Started</button>
+            </Link>
           </div>
         </div>
       </section>
@@ -71,7 +76,9 @@ function Home() {
           Use Jupyter Toolkit to simplify your workflow, save time, and focus on
           machine learning, notebooks, and project development.
         </p>
-        <button className="btn-primary">Join Now</button>
+        <Link to="/community">
+          <button className="btn-primary">Join Now</button>
+        </Link>
       </section>
     </div>
   );
