@@ -24,7 +24,7 @@ type DownloadItem = {
 };
 
 type ApiResponse = {
-  message?: boolean | string; // Handle both string and boolean
+  message?: boolean | string;
   downloadUrl?: string;
   data?: {
     downloadUrl?: string;
@@ -73,8 +73,12 @@ function Downloads() {
   const [showEmailCheckForm, setShowEmailCheckForm] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showVersionModal, setShowVersionModal] = useState(false);
-  const [selectedDownload, setSelectedDownload] = useState<DownloadItem | null>(null);
-  const [pendingFileName, setPendingFileName] = useState<string | null>(null);
+  const [selectedDownload, setSelectedDownload] =
+    useState<DownloadItem | null>(null);
+  const [pendingDownload, setPendingDownload] = useState<{
+    fileName: string;
+    platform: "windows" | "linux";
+  } | null>(null);
   const [prefillEmail, setPrefillEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [downloadAttempts, setDownloadAttempts] = useState(0);
@@ -100,8 +104,8 @@ function Downloads() {
       platform: "windows",
       versions: [
         { label: "Windows v1.1", fileName: "v1.0.1" },
-        { label: "Windows v1.2", fileName: "Presentation.txt" },
-        { label: "Windows v1.3", fileName: "Presentation.txt" },
+        { label: "Windows v1.2 (Coming soon)", fileName: "Presentation.txt" },
+        { label: "Windows v1.3 (Coming soon)", fileName: "Presentation.txt" },
       ],
     },
     {
@@ -120,9 +124,9 @@ function Downloads() {
       btnClass: "linux",
       platform: "linux",
       versions: [
-        { label: "Linux v1.1", fileName: "Presentation.txt" },
-        { label: "Linux v1.2", fileName: "Presentation.txt" },
-        { label: "Linux v1.3", fileName: "Presentation.txt" },
+        { label: "Linux v1.1", fileName: "v1.0.0" },
+        { label: "Linux v1.2 (Coming soon)", fileName: "Presentation.txt" },
+        { label: "Linux v1.3 (Coming soon)", fileName: "Presentation.txt" },
       ],
     },
   ];
@@ -178,12 +182,9 @@ function Downloads() {
   };
 
   const sanitizeFileName = (fileName: string): string => {
-    return fileName
-      .replace(/\.\./g, "")
-      .replace(/[/\\]/g, "");
+    return fileName.replace(/\.\./g, "").replace(/[/\\]/g, "");
   };
 
-  // Fix double slashes in URL path while preserving https://
   const normalizeUrl = (url: string): string => {
     return url.replace(/([^:])\/\/+/g, "$1/");
   };
@@ -227,7 +228,6 @@ function Downloads() {
         signal: controller.signal,
       });
 
-      // Don't retry 404 responses
       if (response.status === 404) {
         return response;
       }
@@ -256,7 +256,10 @@ function Downloads() {
     }
   };
 
-  const startDownload = async (fileName: string) => {
+  const startDownload = async (
+    fileName: string,
+    platform: "windows" | "linux"
+  ) => {
     setMessage("");
 
     if (!checkRateLimit()) return;
@@ -283,7 +286,9 @@ function Downloads() {
         headers.Authorization = `Bearer ${token}`;
       }
 
-      const downloadEndpoint = `${API_BASE_URL}/api/FileDownload/link/${sanitizedFileName}?expiryMinutes=5`;
+      const downloadEndpoint =
+        `${API_BASE_URL}/api/FileDownload/link/${sanitizedFileName}` +
+        `?platform=${platform}&expiryMinutes=5`;
 
       const response = await fetchWithRetry(downloadEndpoint, {
         method: "GET",
@@ -315,17 +320,14 @@ function Downloads() {
         );
       }
 
-      // Handle both flat and nested downloadUrl shapes
       const rawDownloadUrl = result?.downloadUrl ?? result?.data?.downloadUrl;
 
       if (!rawDownloadUrl) {
         throw new Error("Download URL was not returned by the server.");
       }
 
-      // Fix any double slashes in the path (e.g. /download//v1.0.1/)
       const downloadUrl = normalizeUrl(rawDownloadUrl);
 
-      // Validate the cleaned URL
       let parsedUrl: URL;
       try {
         parsedUrl = new URL(downloadUrl);
@@ -374,8 +376,11 @@ function Downloads() {
     setShowVersionModal(true);
   };
 
-  const handleVersionSelect = (fileName: string) => {
-    setPendingFileName(fileName);
+  const handleVersionSelect = (
+    fileName: string,
+    platform: "windows" | "linux"
+  ) => {
+    setPendingDownload({ fileName, platform });
     setShowVersionModal(false);
     setShowEmailCheckForm(true);
   };
@@ -417,67 +422,54 @@ function Downloads() {
         }
       );
 
-      console.log("Response status:", response.status);
-
       let data: ApiResponse | null = null;
       const contentType = response.headers.get("content-type");
 
       if (contentType?.includes("application/json")) {
         try {
           const text = await response.text();
-          console.log("Raw response text:", text);
           data = text ? (JSON.parse(text) as ApiResponse) : null;
         } catch {
           data = null;
         }
       }
 
-      console.log("Parsed data:", data);
-
       if (response.status === 401 || response.status === 403) {
         localStorage.removeItem("auth");
         throw new Error("Your session has expired. Please log in again.");
       }
 
-      // ✅ FIXED: Handle 404 as "user not found"
       if (response.status === 404) {
-        console.log("User not found (404), showing registration form");
         setShowEmailCheckForm(false);
         setShowForm(true);
         return;
       }
 
       if (!response.ok) {
-        throw new Error(
-          `Failed to check email (${response.status}).`
-        );
+        throw new Error(`Failed to check email (${response.status}).`);
       }
 
-      // Handle both string and boolean responses for 200 OK
       const userExists = data?.message === true || data?.message === "true";
       const userNotFound = data?.message === false || data?.message === "false";
 
       if (userNotFound) {
-        console.log("User not found (false message), showing registration form");
         setShowEmailCheckForm(false);
         setShowForm(true);
         return;
       }
 
       if (userExists) {
-        console.log("User found, starting download");
         setShowEmailCheckForm(false);
         setMessageType("success");
         setMessage("Welcome back! Your download is starting...");
 
-        if (pendingFileName) {
-          await startDownload(pendingFileName);
-          setPendingFileName(null);
+        if (pendingDownload) {
+          await startDownload(pendingDownload.fileName, pendingDownload.platform);
+          setPendingDownload(null);
         }
         return;
       }
 
-      // fallback
       throw new Error(`Unexpected server response: ${JSON.stringify(data)}`);
     } catch (err: unknown) {
       setMessageType("error");
@@ -505,9 +497,9 @@ function Downloads() {
     setMessageType("success");
     setMessage("Thank you for registering! Your download is starting...");
 
-    if (pendingFileName) {
-      await startDownload(pendingFileName);
-      setPendingFileName(null);
+    if (pendingDownload) {
+      await startDownload(pendingDownload.fileName, pendingDownload.platform);
+      setPendingDownload(null);
     }
   };
 
@@ -610,7 +602,9 @@ function Downloads() {
                 <button
                   key={`${selectedDownload.platform}-${version.label}`}
                   className="version-item-btn"
-                  onClick={() => handleVersionSelect(version.fileName)}
+                  onClick={() =>
+                    handleVersionSelect(version.fileName, selectedDownload.platform)
+                  }
                 >
                   <span>{version.label}</span>
                   <span className="version-arrow" aria-hidden="true">

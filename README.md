@@ -1,76 +1,132 @@
-# React + TypeScript + Vite
+# Jupyter Toolkit Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Jupyter Toolkit is a project designed to make it easier to use Jupyter Notebook, especially for students and developers working in machine learning and artificial intelligence.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Setting up a proper environment with GPU support (such as CUDA, cuDNN, and TensorFlow) is usually difficult and time-consuming. This project aims to simplify that process by automating setup and improving the overall workflow.
 
-## React Compiler
+The frontend provides a simple and user-friendly interface where users can access the system and manage their work easily.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+## Problem
 
-## Expanding the ESLint configuration
+Many users face problems when setting up Jupyter Notebook with GPU support:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- The installation process is complex
+- Different versions of tools may not work together
+- It takes a lot of time to fix errors
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+In addition, users have to manually save their work and push code to GitHub, which is repetitive and easy to forget.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Target Users
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This project is mainly for:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Students learning machine learning or AI
+- Developers using TensorFlow
+- Anyone who uses Jupyter Notebook regularly
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
- 
+---
+
+## Solution
+
+This project provides a simple solution by automating important tasks:
+
+- Automatically sets up the environment using Docker
+- Launches Jupyter Notebook in the browser
+- Detects file changes and pushes updates to GitHub
+
+This helps users save time and avoid common setup errors.
+
+---
+
+## Main Features
+
+1. Automatic Environment Setup  
+   The system creates a Docker container with all required tools such as CUDA, cuDNN, and TensorFlow.
+
+2. Notebook Auto Launch  
+   Jupyter Notebook starts automatically and opens in the browser.
+
+3. Automatic GitHub Commit  
+   The system detects file changes and automatically commits and pushes them to GitHub.
+
+---
+
+## Technologies Used
+
+Frontend:
+- React
+- TypeScript
+- Vite
+- CSS
+
+Backend:
+- .NET Core 9
+
+Database:
+- Firebase Firestore
+
+Other Tools:
+- Docker
+- GitHub API
+- Render (for deployment)
+
+---
+
+## CI/CD Setup
+
+This project uses GitHub Actions for automation.
+
+- The CI workflow installs dependencies, runs lint, tests, audit, and builds the project.
+- CodeQL is used for security scanning.
+- Deployment is done through Render using a build hook after CI passes.
+
+---
+
+## Project Timeline
+
+- Week 1–2: Planning and research  
+- Week 3–4: Backend setup  
+- Week 5–6: Feature development  
+- Week 7–8: Testing and final submission  
+
+---
+
+## Risks
+
+- GPU compatibility issues → tested on different systems  
+- Docker installation problems → clear setup instructions provided  
+- Limited time → focus on important features  
+
+---
+
+## Team Members
+
+- Product Coordinator: Anil Dhakal  
+- Backend Developer: Pravij Upreti, Anil Dhakal  
+- Frontend Developer: Saman Puri  
+- System Developer: Pravij Upreti, Rupak Gurung  
+- Scrum Master: Rupak Gurung  
+
+---
+
+## Tools Used for Workflow
+
+- Communication: WhatsApp, Discord  
+- Task Management: Trello  
+- Code Repository: GitHub  
+
+---
+
+## Future Improvements
+
+- Improve user interface design  
+- Add more tests  
+- Improve performance  
+- Better error handling  
+
