@@ -1,17 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./NavBar.css";
 
 function Navbar() {
   return (
     <header className="global-header">
-      <div className="global-header-top">
-        <img 
-          src="/jtk2.png" 
-          alt="Jupyter Notebook Toolkit Logo" 
+      <Link to="/" className="global-header-top">
+        <img
+          src="/jtk2.png"
+          alt="Jupyter Notebook Toolkit Logo"
           className="global-logo-image"
         />
         <h1 className="global-logo-text">Jupyter NoteBook Toolkit</h1>
-      </div>
+      </Link>
 
       <nav className="global-menu-bar">
         <NavLink to="/" end>
