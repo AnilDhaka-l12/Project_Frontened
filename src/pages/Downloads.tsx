@@ -125,7 +125,7 @@ function Downloads() {
       platform: "linux",
       versions: [
         { label: "Linux v1.1", fileName: "v1.0.0" },
-        { label: "Linux v1.2 (Coming soon)", fileName: "Presentation.txt" },
+        { label: "Linux v1.2", fileName: "v1.0.1" },
         { label: "Linux v1.3 (Coming soon)", fileName: "Presentation.txt" },
       ],
     },
